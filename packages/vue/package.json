@@ -1,0 +1,41 @@
+{
+  "name": "@form-blocks/vue",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./dist/form-blocks.umd.cjs",
+  "module": "./dist/form-blocks.js",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/form-blocks.js",
+      "require": "./dist/form-blocks.umd.js"
+    }
+  },
+  "peerDependencies": {
+    "bootstrap": "^5.3.8",
+    "bootstrap-vue-next": "^0.44.2",
+    "vue": "^3.4.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@form-blocks/core": "^1.0.0",
+    "@form-blocks/styles": "^1.0.0",   
+    "flatpickr": "^4.6.13",
+    "maska": "^3.2.0",
+    "vue-flatpickr-component": "^12.0.0",
+    "vue-select": "^4.0.0-beta.6"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.5",
+    "sass-embedded": "^1.99.0",
+    "unplugin-vue-components": "^32.0.0",
+    "vite": "^8.0.4",
+    "vue": "^3.5.32"
+  }
+}

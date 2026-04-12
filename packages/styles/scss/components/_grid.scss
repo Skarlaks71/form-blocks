@@ -1,0 +1,54 @@
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+
+.fb-container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 15px;
+  padding-left: 15px;
+  
+  @media (min-width: 768px) { max-width: 720px; }
+  @media (min-width: 1200px) { max-width: 1140px; }
+  
+  &-fluid {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+.fb-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.fb-col {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  flex: 1 0 0%;
+  max-width: 100%;
+
+  // Exemplo de utilitário de coluna simples
+//   &.fb-col-6 { flex: 0 0 50%; max-width: 50%; }
+//   &.fb-col-12 { flex: 0 0 100%; max-width: 100%; }
+}
+
+@each $key, $val in $breakpoints {
+  @media (min-width: $val) {
+    @for $i from 1 through 12 {
+      .fb-col-#{$key}-#{$i} {
+        flex: 0 0 auto;
+        width: percentage($i / 12);
+      }
+    }
+  }
+}
