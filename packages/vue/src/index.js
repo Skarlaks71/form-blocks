@@ -4,12 +4,14 @@ import FbCol from "./components/grid/FbCol"
 import FbContainer from "./components/grid/FbContainer"
 import FbRow from "./components/grid/FbRow"
 import limitChars from "./Directives/limitChars"
+import FbInput from "./components/forms/FbInput"
 
 export default {
   install: app => {
     app.component('FbContainer', FbContainer)
     app.component('FbRow', FbRow)
     app.component('FbCol', FbCol)
+    app.component('FbInput', FbInput)
     app.component('FormBlocks', FormBlocks);
     app.directive('maska', vMaska);
     app.directive('limit-chars', limitChars);

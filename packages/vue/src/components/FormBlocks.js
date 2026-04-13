@@ -11,10 +11,7 @@ export default {
   emits: ['update:modelValue'],
   setup(props, { slots, emit, expose }) {
     // 1. Gerenciamento do Estado Global do Formulário
-    const formData = computed({
-      get: () => props.modelValue,
-      set: (val) => emit('update:modelValue', val)
-    })
+    const formData = computed(() => props.modelValue)
 
     // 2. Provedores (Injeção de dependência para todos os filhos)
     // Usamos toRef para manter a reatividade do objeto de erros
