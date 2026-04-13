@@ -1,0 +1,23 @@
+.fb-repeater {
+    width: 100%;
+}
+
+.disabled-row-repeater {
+  padding: 1rem;
+  position: relative;
+  background: #f1f1f1;
+  opacity: .3;
+  pointer-events: none;
+  border: 3px dashed #C0C0C0; // Simplifiquei a borda para performance
+
+  &::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    cursor: not-allowed;
+  }
+}

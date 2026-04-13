@@ -5,11 +5,23 @@
     "main": "./dist/index.js",
     "module": "./dist/index.js",
     "types": "/.dist/index.d.ts",
-    "files": ["dist"],
+    "exports": {
+        ".": {
+        "development": "./src/index.js",
+        "import": "./dist/index.js",
+        "require": "./dist/index.js"
+        }
+    },
+    "files": [
+        "dist"
+    ],
     "scripts": {
         "build": "tsc"
     },
     "devDependencies": {
         "typescript": "^5.0.0"
+    },
+    "dependencies": {
+        "lodash.clonedeep": "^4.5.0"
     }
 }

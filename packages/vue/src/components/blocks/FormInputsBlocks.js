@@ -9,12 +9,12 @@ import {
 } from 'vue'
 
 // Importamos seus componentes estruturais de render function
-import FbCol from './grid/FbCol' 
+import FbCol from '../grid/FbCol' 
 import { BFormGroup, BFormInvalidFeedback, BFormInput } from 'bootstrap-vue-next'
 import VSelect from 'vue-select'
 
 export default {
-  name: 'FormInputBlocks',
+  name: 'FormInputsBlocks',
   props: {
     input: { type: Object, required: true },
     inputKey: { type: [Number, String], default: 0 }
