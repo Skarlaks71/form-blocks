@@ -1,4 +1,5 @@
 import { h } from 'vue'
+import { PREFIX } from '@form-blocks/core/constants'
 
 export default {
   name: 'FbContainer',
@@ -7,11 +8,13 @@ export default {
     tag: { type: String, default: 'div' }
   },
   setup(props, { slots }) {
+    const containerClass = `${PREFIX}-container`
+
     return () => h(
       props.tag,
       {
         class: [
-          props.fluid ? 'fb-container-fluid' : 'fb-container'
+          props.fluid ? `${containerClass}-fluid` : containerClass
         ]
       },
       slots.default?.()

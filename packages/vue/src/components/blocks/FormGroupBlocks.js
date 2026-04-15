@@ -3,6 +3,7 @@ import FbCol from '../grid/FbCol'
 import FormInputsBlocks from './FormInputsBlocks'
 import { h, Transition, resolveComponent } from 'vue'
 import FormBlocksRepeater from './FormBlocksRepeater'
+import { PREFIX } from '@form-blocks/core/constants'
 
 export default {
   name: 'FormGroupBlocks',
@@ -11,6 +12,8 @@ export default {
     groupKey: { type: [Number, String], default: 0 }
   },
   setup(props, { slots }) {
+    const gClass = `${PREFIX}-group`
+
     return () => {
       const { group, groupKey } = props
 
@@ -25,7 +28,7 @@ export default {
         if (!group.noTitle) {
           children.push(
             h(FbCol, { cols: 12 }, {
-              default: () => h('h3', { class: 'fb-group-title' }, group.title)
+              default: () => h('h3', { class: `${gClass}__title` }, group.title)
             })
           )
         }
@@ -69,7 +72,7 @@ export default {
       }
 
       // 3. Renderização Final: Transition > FbRow
-      return h(Transition, { name: 'fade' }, {
+      return h(Transition, { name: `${PREFIX}-fade` }, {
         default: () => h(FbRow, {
           // Lógica da classe de margem
           class: groupKey > 0 ? 'mt-12' : ''

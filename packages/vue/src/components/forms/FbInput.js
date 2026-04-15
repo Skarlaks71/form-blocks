@@ -1,4 +1,5 @@
 import { h, resolveDirective, withDirectives, computed } from 'vue'
+import { PREFIX } from '@form-blocks/core/constants'
 
 export default {
   name: 'FbInput',
@@ -14,6 +15,7 @@ export default {
   },
   emits: ['update:modelValue', 'blur', 'focus'],
   setup(props, { emit, attrs }) {
+    const ibControlClass = `${PREFIX}-input-block__control`
 
     const vMaska = resolveDirective('maska')
     const vLimitChars = resolveDirective('limit-chars')
@@ -47,10 +49,10 @@ export default {
         id: finalId.value,
         // 2. Classes dinâmicas baseadas no estado
         class: [
-          'fb-input-block__control',
+          ibControlClass,
           {
-            'fb-input-block__control--valid': props.state === true,
-            'fb-input-block__control--invalid': props.state === false
+            [`${ibControlClass}--valid`]: props.state === true,
+            [`${ibControlClass}--invalid`]: props.state === false
           }
         ],
 

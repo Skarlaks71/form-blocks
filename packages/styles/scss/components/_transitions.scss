@@ -1,8 +1,10 @@
-.fade-enter-active, .fade-leave-active {
+@use "../abstract/config";
+
+.#{config.$fb-prefix}-fade-enter-active, .#{config.$fb-prefix}-fade-leave-active {
   transition: all 0.3s ease;
 }
 
-.fade-enter-from, .fade-leave-to {
+.#{config.$fb-prefix}-fade-enter-from, .#{config.$fb-prefix}-fade-leave-to {
   opacity: 0;
   transform: translateY(-10px);
 }

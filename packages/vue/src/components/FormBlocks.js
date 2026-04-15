@@ -1,5 +1,6 @@
 import { h, provide, computed, toRef } from 'vue'
 import FormGroupBlocks from './blocks/FormGroupBlocks'
+import { PREFIX } from '@form-blocks/core/constants'
 
 export default {
   name: 'FormBlocks',
@@ -10,6 +11,7 @@ export default {
   },
   emits: ['update:modelValue'],
   setup(props, { slots, emit, expose }) {
+    const fbClass = `${PREFIX}-form-blocks`
     // 1. Gerenciamento do Estado Global do Formulário
     const formData = computed(() => props.modelValue)
 
@@ -47,7 +49,7 @@ export default {
         })
       }
 
-      return h('div', { class: 'form-blocks' }, renderGroups())
+      return h('div', { class: fbClass }, renderGroups())
     }
   }
 }

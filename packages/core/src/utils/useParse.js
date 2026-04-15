@@ -200,7 +200,8 @@ export default function useParse() {
   * Converte um array de strings em um array de objetos com estrutura específica,
   * usando um limite ou um range de índices.
   *
-  * @param {string[]} stringsArray - Lista de strings a serem convertidas.
+  * @param {Array<string | [string, Function, ...string[]]>} stringsArray - Lista de strings a serem convertidas.
+  * - O segundo elemento do subarray representa o construtor do tipo (Array, Object, etc).
   * @param {number | [number, number]} limitOrRange - Valor limite ou intervalo de índices.
   * @returns {Array<{ model: string, back: string }>} - Array de objetos formatados.
   */

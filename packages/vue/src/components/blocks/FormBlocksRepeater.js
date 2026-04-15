@@ -12,6 +12,7 @@ import FbRow from '../grid/FbRow'
 import FbCol from '../grid/FbCol'
 import FormBlocksRepeaterItem from './FormBlocksRepeaterItem'
 import { useCloneDeep } from '@form-blocks/core'
+import { PREFIX } from '@form-blocks/core/constants'
 
 export default {
   name: 'FormBlocksRepeater',
@@ -62,7 +63,7 @@ export default {
           key: key, // Em um framework real, o ideal seria um ID único, mas mantemos a chave por agora
           class: [
             { 'mt-3': key > 0 },
-            { 'disabled-row-repeater': item.deleted }
+            { [`${PREFIX}-disabled-row-repeater`]: item.deleted }
           ]
         }, {
           default: () => [
@@ -83,8 +84,8 @@ export default {
       })
 
       // 2. Renderização Final
-      return h('div', { class: 'fb-repeater fb-container' }, [
-        h(TransitionGroup, { name: 'fade', tag: 'div' }, {
+      return h('div', { class: `${PREFIX}-repeater ${PREFIX}-container` }, [
+        h(TransitionGroup, { name: `${PREFIX}-fade`, tag: 'div' }, {
           default: () => renderItems()
         }),
         // Botão de Adicionar

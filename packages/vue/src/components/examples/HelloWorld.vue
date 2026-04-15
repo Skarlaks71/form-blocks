@@ -18,10 +18,9 @@ const props = defineProps({
       'age',
       'organ_type',
       'flat',
-      'name2',
-      'login2',
-      'senha2',
-      'organ_type2',
+      ['contacts', Array,
+      'type',
+      'value'],
     ],
   },
 })

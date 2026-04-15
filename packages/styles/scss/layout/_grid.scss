@@ -1,4 +1,5 @@
 @use 'sass:math';
+@use "../abstract/config";
 
 $breakpoints: (
   sm: 576px,
@@ -7,7 +8,7 @@ $breakpoints: (
   xl: 1200px
 );
 
-.fb-container {
+.#{config.$fb-prefix}-container {
   width: 100%;
   margin-right: auto;
   margin-left: auto;
@@ -24,14 +25,14 @@ $breakpoints: (
   }
 }
 
-.fb-row {
+.#{config.$fb-prefix}-row {
   display: flex;
   flex-wrap: wrap;
   margin-right: -15px;
   margin-left: -15px;
 }
 
-.fb-col {
+.#{config.$fb-prefix}-col {
   position: relative;
   width: 100%;
   padding-right: 15px;
@@ -45,27 +46,27 @@ $breakpoints: (
 }
 
 @for $i from 1 through 12 {
-  .fb-col-#{$i} {
+  .#{config.$fb-prefix}-col-#{$i} {
     flex: 0 0 auto;
     width: math.percentage(math.div($i, 12));
   }
 }
 
 // Coluna que ocupa apenas o espaço do conteúdo
-.fb-col-auto {
+.#{config.$fb-prefix}-col-auto {
   flex: 0 0 auto;
   width: auto;
 }
 
 @each $key, $val in $breakpoints {
   @media (min-width: $val) {
-    .fb-col-#{$key}-auto {
+    .#{config.$fb-prefix}-col-#{$key}-auto {
       flex: 0 0 auto;
       width: auto;
     }
 
     @for $i from 1 through 12 {
-      .fb-col-#{$key}-#{$i} {
+      .#{config.$fb-prefix}-col-#{$key}-#{$i} {
         flex: 0 0 auto;
         width: math.percentage(math.div($i, 12));
       }

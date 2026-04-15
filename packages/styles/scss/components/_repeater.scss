@@ -1,8 +1,10 @@
-.fb-repeater {
+@use "../abstract/config";
+
+.#{config.$fb-prefix}-repeater {
     width: 100%;
 }
 
-.disabled-row-repeater {
+.#{config.$fb-prefix}-disabled-row-repeater {
   padding: 1rem;
   position: relative;
   background: #f1f1f1;
