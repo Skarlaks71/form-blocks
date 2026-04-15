@@ -40,12 +40,12 @@ export default {
       const labelNode = props.label ? h(labelTag, {
         ...labelAttr,
         class: [
-          'form-label',
+          'fb-input-block__label',
           props.labelClass,
           {
             'form-label--block': !isNativeLabel,
-            'visually-hidden': props.labelSrOnly,
-            [`text-${props.labelAlign}`]: props.labelAlign 
+            'fb-input-block__label--sr-only': props.labelSrOnly,
+            [`fb-input-block__label--${props.labelAlign}`]: props.labelAlign,
           }
         ]
       }, props.label) : null
@@ -53,13 +53,13 @@ export default {
       // 2. Renderização da Descrição (Help Text)
       const descriptionNode = props.description ? h('div', {
         id: descriptionId.value,
-        class: ['form-text', props.descriptionClass]
+        class: ['fb-input-block__description', props.descriptionClass]
       }, props.description) : null
 
       // 3. Renderização do Erro (Só aparece se state === false)
       const errorNode = (props.state === false && props.invalidFeedback) ? h('div', {
         id: feedbackId.value,
-        class: 'invalid-feedback',
+        class: 'fb-input-block__feedback',
         style: { display: 'block' }, // Garante visibilidade no Bootstrap sem depender de irmãos
         'aria-live': 'assertive' // WCAG: Anuncia o erro imediatamente
       }, props.invalidFeedback) : null
@@ -76,7 +76,7 @@ export default {
       }) : null
 
       return h('div', { 
-        class: 'fb-input-block mb-3',
+        class: 'fb-input-block',
         // Container pode ter atributos de validação se necessário
       }, [
         labelNode,

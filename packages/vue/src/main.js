@@ -1,6 +1,5 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import { BApp } from 'bootstrap-vue-next'
 import FormBlocksInit from './index'
 
 import 'vue-select/dist/vue-select.css';

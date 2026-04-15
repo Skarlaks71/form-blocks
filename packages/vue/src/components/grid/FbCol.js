@@ -9,7 +9,8 @@ export default {
     cols: { type: [String, Number], default: null },
     sm: { type: [String, Number], default: null },
     md: { type: [String, Number], default: null },
-    lg: { type: [String, Number], default: null }
+    lg: { type: [String, Number], default: null },
+    xl: { type: [String, Number], default: null },
   },
   setup(props, { slots }) {
     return () => {

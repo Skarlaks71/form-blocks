@@ -1,0 +1,174 @@
+@use "sass:meta";
+@use "sass:color";
+
+$fb-primary: #0d6efd !default;
+$fb-error: #dc3545 !default;
+$fb-success: #198754 !default;
+$fb-gray-600: #6c757d !default;
+$fb-border-color: #dee2e6 !default;
+$fb-input-bg: #fff !default;
+$fb-input-focus-shadow: rgba($fb-primary, 0.25) !default;
+$fb-transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+$fb-input-height: 2.375rem; // Altura padrão aproximada (padding + line-height)
+$fb-border-color: #dee2e6;
+$fb-border-radius: 0.375rem;
+
+@mixin fb-validation-icon($color) {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='#{str-replace(meta.inspect($color), '#', '%23')}'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='#{str-replace(meta.inspect($color), '#', '%23')}' stroke='none'/%3e%3c/svg%3e");
+}
+
+// Bloco Principal: FbInputBlock
+.fb-input-block {
+    margin-bottom: 1rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    // Elementos
+    &__label {
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #212529;
+
+        // Modificadores de Alinhamento
+        &--left { text-align: left; }
+        &--center { text-align: center; }
+        &--right { text-align: right; }
+        
+        // Modificador de Acessibilidade
+        &--sr-only {
+            position: absolute !important;
+            width: 1px !important;
+            height: 1px !important;
+            padding: 0 !important;
+            margin: -1px !important;
+            overflow: hidden !important;
+            clip: rect(0, 0, 0, 0) !important;
+            white-space: nowrap !important;
+            border: 0 !important;
+        }
+    }
+
+    &__description {
+        margin-top: 0.25rem;
+        font-size: 0.875em;
+        color: $fb-gray-600;
+    }
+
+    &__feedback {
+        width: 100%;
+        margin-top: 0.25rem;
+        font-size: 0.875em;
+        color: $fb-error;
+        display: block; // Garante exibição no fluxo do Transition
+    }
+
+    // O Input em si (Elemento do Bloco ou Bloco Independente)
+    &__control {
+        display: block;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        background-color: $fb-input-bg;
+        border: 1px solid $fb-border-color;
+        border-radius: 0.375rem;
+        transition: $fb-transition;
+        appearance: none;
+
+        &:focus {
+            border-color: color.adjust($fb-primary, $lightness: 25%);
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem $fb-input-focus-shadow;
+        }
+
+        // Modificadores de Estado
+        &--invalid {
+            border-color: $fb-error;
+            padding-right: calc(1.5em + 0.75rem);
+            @include fb-validation-icon($fb-error);
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.1875rem) center;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+
+            &:focus {
+                box-shadow: 0 0 0 0.25rem rgba($fb-error, 0.25);
+            }
+        }
+
+        &--valid {
+            border-color: $fb-success;
+            // Poderia adicionar o ícone de check aqui se desejar
+        }
+    }
+
+    // Customização do Vue Select quando dentro do nosso bloco
+    & .v-select {
+        width: 100%;
+        
+        // O container principal que simula o input
+        .vs__dropdown-toggle {
+            padding: 0; // Resetamos o padding original do v-select
+            min-height: $fb-input-height;
+            border: 1px solid $fb-border-color;
+            border-radius: $fb-border-radius;
+            background: #fff;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        // Alinhamento do texto e input interno
+        .vs__selected-options {
+            padding: 0 0.75rem; // O padding que o nosso __control tem
+        }
+
+        .vs__search {
+            margin: 0;
+            padding: 0;
+            height: calc(#{$fb-input-height} - 2px); // Desconta a borda
+            line-height: calc(#{$fb-input-height} - 2px);
+            border: none;
+            
+            &::placeholder {
+                color: #6c757d;
+            }
+        }
+
+        // Centralizar as tags (selected) caso seja multiple
+        .vs__selected {
+            margin: 4px 2px 0 0;
+            line-height: 1.4;
+        }
+
+        // Ajuste dos ícones (clear e arrow)
+        .vs__actions {
+            padding: 0 0.75rem 0 0;
+        }
+
+        // Estado de Focus
+        &.vs--open .vs__dropdown-toggle {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+        // Modificador de Erro (BEM no pai refletindo no filho)
+        &.is-invalid .vs__dropdown-toggle {
+            border-color: #dc3545;
+        
+            &:focus, &.vs--open .vs__dropdown-toggle {
+                box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+            }
+        }
+    }
+}
+
+// Função auxiliar para trocar o # por %23 no SVG (necessário para Sass)
+@function str-replace($string, $search, $replace: '') {
+    $index: str-index($string, $search);
+    @if $index {
+        @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    }
+    @return $string;
+}

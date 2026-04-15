@@ -13,6 +13,8 @@ import FbCol from '../grid/FbCol'
 import FbInputBlock from '../forms/FbInputBlock'
 import FbInput from '../forms/FbInput'
 import VSelect from 'vue-select'
+import flatPickr from 'vue-flatpickr-component';
+import 'flatpickr/dist/flatpickr.css';
 
 export default {
   name: 'FormInputsBlocks',
@@ -29,6 +31,7 @@ export default {
     const mapComponent = {
       'input': FbInput,
       'select': VSelect,
+      'flatpickr': flatPickr,
       // Se for um componente que o usuário registrou globalmente, 
       // o resolveDynamicComponent cuidará disso abaixo.
     }
@@ -40,12 +43,20 @@ export default {
       if (input.dependent?.value === false) return null
 
       // Resolver o componente principal
-      const componentTarget = mapComponent[input.component] || resolveDynamicComponent(input.component)
+      const componentName = input.component || 'input'
+      const componentTarget = mapComponent[componentName] || resolveDynamicComponent(input.component)
+
+      const finalColProps = { 
+        cols: 12, 
+        ...input.colProps 
+      }
+
+      const currentValue = formData.value[input.model]
 
       // Criar os atributos base que Todos os inputs recebem
       const commonProps = slotProps => ({
         id: slotProps.id,
-        modelValue: formData.value[input.model],
+        modelValue: currentValue !== undefined ? currentValue : '',
         'onUpdate:modelValue': (val) => (formData.value[input.model] = val),
         state: slotProps.state,
         'aria-describedby': slotProps.ariaDescribedby,
@@ -65,7 +76,15 @@ export default {
 
       // Montar o componente de Input com suas diretivas
       const inputNode = slotProps => {
-        const vnode = h(componentTarget, commonProps(slotProps), {
+        const isFlatpickr = input.component === 'flatpickr';
+
+        const vnode = h(componentTarget, {
+          ...commonProps(slotProps),
+          class: [
+            (isFlatpickr) ? 'fb-input-block__control' :
+            { 'fb-input-block__control--invalid': slotProps.state === false }
+          ],
+        }, {
           // Slot de 'no-options' para o v-select
           'no-options': () => 'Desculpe, sem opções no momento!'
         })
@@ -87,7 +106,7 @@ export default {
 
       // 4. Montar a estrutura completa (Transition > FbCol > FbInputBlock)
       return h(Transition, { name: 'fade' }, {
-        default: () => h(FbCol, { ...input.colProps }, {
+        default: () => h(FbCol, finalColProps, {
           default: () => h(FbInputBlock, {
             id: `input-${input.model}`,
             label: input.label,

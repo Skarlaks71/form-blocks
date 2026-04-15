@@ -13,47 +13,31 @@ const props = defineProps({
     type: Array,
     default: () => [
       'name',
-      'administrative_unit_type_code',
+      'login',
+      'senha',
+      'age',
+      'organ_type',
+      'flat',
+      'name2',
+      'login2',
+      'senha2',
+      'organ_type2',
     ],
   },
 })
-const count = ref(0)
-const organBackVars = ref([
-      'organ_code',
-      'name',
-      'cnpj',
-      'legislation',
-      'dispatch_date',
-      'administrative_unit_type_code',
-      'allocation',
-      ['address', Object,
-      'zipcode',
-      'street',
-      'number',
-      'complement',
-      'district',
-      'state',
-      'city'],
-      ['contacts', Array,
-      'type',
-      'value'],
-    ])
 
 const formData = ref({});
 const formOrganData = ref({});
 const formErrors = ref({})
 const { groupBase } = useTestForm()
-const { groups: makeOrganGroups } = useOrganForms();
-const { groups: makeGroups } = useFormHandle();
-const groups = makeGroups(props.backVars, groupBase, [2])
-const groupsO = makeOrganGroups(organBackVars.value, {})
+const { makeGroups } = useFormHandle();
+// const { makeGroups: makeOrganGroups } = useOrganForms();
+const groups = makeGroups(props.backVars, groupBase, [6, [6, 8]])
+// const groupsO = makeOrganGroups(organBackVars.value, {})
 console.log('groups: ', groups)
 
 const handleSubmit = () => {
   console.log('formData: ', formData.value)
-}
-const handleSubmit2 = () => {
-  console.log('formData: ', formOrganData.value)
 }
 </script>
 

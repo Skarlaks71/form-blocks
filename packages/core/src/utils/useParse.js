@@ -234,6 +234,44 @@ export default function useParse() {
     });
   }
 
+  /**
+   * Transforma uma string formatada (DSL) em um objeto de configuração de input.
+   * Suporta definição de tipo e responsividade via shorthands.
+   * * @example
+   * 'Senha::password:12:md4' => { label: 'Senha', othersProps: { type: 'password' }, colProps: { cols: '12', md: '4' } }
+   * * @param {string} inputString - A string vinda do array de forms (ex: 'Nome::md6').
+   * @returns {Object} Objeto formatado com label, othersProps e colProps.
+   */
+  const parseStringShorthand = (inputString) => {
+    // 1. Separa o Label do restante da configuração
+    const [label, ...configSegments] = inputString.split('::')
+    const result = { label }
+
+    if (configSegments.length > 0) {
+      // Pega todos os segmentos após o :: (ex: password:6:md4 -> ['password', '6', 'md4'])
+      const parts = configSegments[0].split(':')
+      
+      parts.forEach(part => {
+        // Regex para identificar breakpoints (sm, md, lg, xl) seguidos de números
+        const breakpointMatch = part.match(/^(sm|md|lg|xl)(\d+)$/)
+        // Verifica se é apenas um número puro (referente ao 'cols' base)
+        const isBaseCol = /^\d+$/.test(part)
+
+        if (breakpointMatch) {
+          const [_, bp, val] = breakpointMatch
+          result.colProps = { ...result.colProps, [bp]: val }
+        } else if (isBaseCol) {
+          result.colProps = { ...result.colProps, cols: part }
+        } else if (part) {
+          // Se não for número nem breakpoint, tratamos como o 'type' do input
+          result.othersProps = { ...result.othersProps, type: part }
+        }
+      })
+    }
+
+    return result
+  }
+
   return {
     parseToEditData,
     parseToDatabase,
@@ -242,5 +280,6 @@ export default function useParse() {
     parseToDatabaseWithRepeater,
     parseToDatabaseComplex,
     parseToEditDataComplex,
+    parseStringShorthand,
   }
 }

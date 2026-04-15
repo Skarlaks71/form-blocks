@@ -11,7 +11,6 @@ import {
 import FbRow from '../grid/FbRow'
 import FbCol from '../grid/FbCol'
 import FormBlocksRepeaterItem from './FormBlocksRepeaterItem'
-import { BButton } from 'bootstrap-vue-next'
 import { useCloneDeep } from '@form-blocks/core'
 
 export default {
@@ -74,7 +73,7 @@ export default {
             }),
             // Coluna com o botão de remover
             h(FbCol, { md: 12, lg: 2 }, {
-              default: () => h(BButton, {
+              default: () => h('button', {
                 variant: 'danger',
                 onClick: () => removeItem(key)
               }, { default: () => 'Remover' })
@@ -84,13 +83,13 @@ export default {
       })
 
       // 2. Renderização Final
-      return h('div', { class: 'fb-repeater' }, [
+      return h('div', { class: 'fb-repeater fb-container' }, [
         h(TransitionGroup, { name: 'fade', tag: 'div' }, {
           default: () => renderItems()
         }),
         // Botão de Adicionar
         h('div', { class: 'mt-3' }, [
-          h(BButton, { 
+          h('button', {
             variant: 'primary', // Adicionando uma cor padrão
             onClick: addItem 
           }, { default: () => 'Adicionar' })

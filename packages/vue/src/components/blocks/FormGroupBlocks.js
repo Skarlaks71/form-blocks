@@ -72,7 +72,7 @@ export default {
       return h(Transition, { name: 'fade' }, {
         default: () => h(FbRow, {
           // Lógica da classe de margem
-          class: groupKey > 0 ? 'mt-3' : ''
+          class: groupKey > 0 ? 'mt-12' : ''
         }, {
           default: () => renderContent()
         })

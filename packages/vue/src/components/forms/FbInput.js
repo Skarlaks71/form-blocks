@@ -47,10 +47,10 @@ export default {
         id: finalId.value,
         // 2. Classes dinâmicas baseadas no estado
         class: [
-          'form-control',
+          'fb-input-block__control',
           {
-            'is-valid': props.state === true,
-            'is-invalid': props.state === false
+            'fb-input-block__control--valid': props.state === true,
+            'fb-input-block__control--invalid': props.state === false
           }
         ],
 

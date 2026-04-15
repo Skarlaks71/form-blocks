@@ -6,25 +6,12 @@ export default () => {
 
   const groupBase = [
     {
-      noTitle: true,
+      title: 'Meu Formulário',
       forms: [
-        {
-          colProps: { md: 12 },
-          label: 'Name',
-          component: 'input',
-        },
-        {
-          colProps: { md: 6 },
-          label: 'Login',
-          component: 'input',
-        },
-        {
-          label: 'senha',
-          component: 'input',
-          othersProps: {
-            type: 'password',
-          }
-        },
+        'Name',
+        'Login::email:6',
+        'Senha::password:6',
+        'Age::number:md2',
         {
           colProps: { md: '12', lg: '4', class: 'mt-2' },
           label: 'Tipo do Órgão',
@@ -36,8 +23,39 @@ export default () => {
             reduce: val => val.value,
           },
         },
+        {
+          label: 'Flatpickr',
+          component: 'flatpickr',
+          labelFor: false,
+        }
       ]
-    }
+    },
+    {
+      title: 'Contatos',
+      isRepeater: true,
+      groupModel: 'contacts',
+      groupFormData: { type: null, value: '' },
+      forms: [
+        {
+          colProps: { md: '12', lg: '3' },
+          label: 'Tipo',
+          labelFor: false,
+          component: 'select',
+          limitChars: 11,
+          othersProps: {
+            options: administrationTypeOptions,
+            filterable: true,
+            reduce: val => val.value,
+          },
+        },
+        {
+          colProps: { md: '12', lg: '3' },
+          label: 'Valor',
+          component: 'input',
+          limitChars: 50,
+        },
+      ],
+    },
   ]
 
   return {

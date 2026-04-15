@@ -1,16 +1,29 @@
-import { useCore, useMaska } from "@form-blocks/core"
+import { useCore, useParse } from "@form-blocks/core"
 
 export const useFormHandle = () => {
+  const { parseLimitProps, parseStringShorthand } = useParse()
   const { createInternalProps } = useCore()
-  const { cepMask, docCNPJ } = useMaska()
-  const groups = (backVars, groupBase, groupProps, options) => {
+  const makeGroups = (backVars, groupBase, groupProps, options = {}) => {
 
-    createInternalProps(groupBase, backVars, groupProps)
+    const parseFunction = options.parse || parseLimitProps
 
-    return groupBase
+    const normalizedGroups = groupBase.map(group => ({
+      ...group,
+      forms: group.forms.map(input => {
+        // Se for string, vira objeto com label e model (baseado no label)
+        if (typeof input === 'string') {
+          return parseStringShorthand(input)
+        }
+        return input
+      })
+    }))
+
+    createInternalProps(normalizedGroups, backVars, groupProps, parseFunction)
+
+    return normalizedGroups
   }
 
   return {
-    groups,
+    makeGroups,
   }
 }
