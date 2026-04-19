@@ -1,12 +1,18 @@
 import FbInput from '../components/forms/FbInput'
 import VSelect from 'vue-select'
 import flatPickr from 'vue-flatpickr-component'
+import FbTextarea from '../components/forms/FbTextarea'
+import FbRadio from '../components/forms/FbRadio'
+import FbCheckbox from '../components/forms/FbCheckbox'
 
 // Mapa inicial padrão
 const registry = {
   'input': FbInput,
   'select': VSelect,
   'flatpickr': flatPickr,
+  'textarea': FbTextarea,
+  'radio': FbRadio,
+  'checkbox': FbCheckbox,
 }
 
 /**

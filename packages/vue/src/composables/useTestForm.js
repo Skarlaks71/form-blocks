@@ -27,7 +27,35 @@ export default () => {
           label: 'Flatpickr',
           component: 'flatpickr',
           labelFor: false,
-        }
+        },
+        {
+          label: 'Radio',
+          component: 'radio',
+          othersProps: {
+            name: 'things',
+            options: [
+              { label: 'carro', value: 'car' },
+              { label: 'gato', value: 'cat' },
+              { label: 'baleia', value: 'whale' },
+            ],
+            // inline: true,
+            // button: true,
+          },
+        },
+        {
+          label: 'Checkbox',
+          component: 'checkbox',
+          othersProps: {
+            name: 'thingsC',
+            options: [
+              { label: 'carro', value: 'car' },
+              { label: 'Gato', value: 'cat' },
+              { label: 'baleia', value: 'whale' },
+            ],
+            inline: true,
+            switch: true,
+          },
+        },
       ]
     },
     {
