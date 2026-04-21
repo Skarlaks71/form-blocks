@@ -7,12 +7,30 @@ import FbCheckbox from '../components/forms/FbCheckbox'
 
 // Mapa inicial padrão
 const registry = {
-  'input': FbInput,
-  'select': VSelect,
-  'flatpickr': flatPickr,
-  'textarea': FbTextarea,
-  'radio': FbRadio,
-  'checkbox': FbCheckbox,
+  'input': {
+    component: FbInput,
+    supportsLabelFor: true,
+  },
+  'select': {
+    component: VSelect,
+    supportsLabelFor: false,
+  },
+  'flatpickr': {
+    component: flatPickr,
+    supportsLabelFor: true,
+  },
+  'textarea': {
+    component: FbTextarea,
+    supportsLabelFor: true,
+  },
+  'radio': {
+    component: FbRadio,
+    supportsLabelFor: false,
+  },
+  'checkbox': {
+    component: FbCheckbox,
+    supportsLabelFor: false,
+  },
 }
 
 /**
@@ -20,8 +38,12 @@ const registry = {
  * @param {string} name - O nome que será usado no Objeto (input.component)
  * @param {Component} component - O componente Vue importado
  */
-export const registerComponent = (name, component) => {
-  registry[name] = component
+export const registerComponent = (name, component, meta = {}) => {
+  registry[name] = {
+    component,
+    supportsLabelFor: meta.supportsLabelFor ?? 'true',
+    ...meta,
+  }
 }
 
 export const getRegistry = () => registry

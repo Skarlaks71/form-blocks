@@ -1,0 +1,96 @@
+@use "../abstract/config";
+@use "../abstract/mixins" as m;
+
+$fb-textures: carbon, waves, grid, stripes;
+
+.#{config.$fb_prefix}-button {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+
+    font-size: 14px;
+    transition: all 0.2s ease;
+
+    &--primary {
+        background-color: #F37021; // Seu Laranja FormBlocks
+        color: #fff; // Contraste preto
+        font-weight: 600;
+        
+        &:hover {
+        background-color: darken(#F37021, 5%);
+        }
+    }
+
+    &--danger {
+        background: #ef4444;
+        color: #fff;
+        font-weight: 600;
+        
+        &:hover {
+        background-color: darken(#ef4444, 5%);
+        }
+    }
+
+    @each $texture in $fb-textures {
+        &--texture-#{$texture} {
+            @include m.apply-texture($texture, 0.3);
+
+            &:hover {
+                @include m.apply-texture($texture, 0.4);
+            }
+        }
+    }
+
+    &--flat {
+        background: transparent;
+        box-shadow: none;
+    }
+
+    &--pill {
+        border-radius: 999px;
+    }
+
+    &--circle {
+        border-radius: 50%;
+        padding: 0.5rem;
+        width: 40px;
+        height: 40px;
+    }
+
+    &--loading {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+    &--disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    &__loader {
+        width: 16px;
+        height: 16px;
+        border: 2px solid currentColor;
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+    }
+
+    &__content {
+        display: inline-flex;
+        align-items: center;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

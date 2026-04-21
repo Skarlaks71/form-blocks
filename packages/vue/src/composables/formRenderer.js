@@ -8,11 +8,27 @@ export const createInputNode = ({ input, formData, errors, slotProps }) => {
   
   // 1. Resolver o componente
   const componentName = input.component || 'input'
-  const componentTarget = registry[componentName] || resolveDynamicComponent(input.component)
+  const registryItem = registry[componentName]
+  const componentTarget = registryItem.component || resolveDynamicComponent(input.component)
+
+  const supportsLabelFor = registryItem.supportsLabelFor ?? true
 
   // 2. Normalizar valor (Evitar undefined para Flatpickr/VSelect)
   const currentValue = formData.value[input.model]
-  const normalizedValue = currentValue !== undefined ? currentValue : ''
+  let normalizedValue = currentValue
+
+  if (normalizedValue === undefined) {
+    switch (componentName) {
+      case 'checkbox':
+        normalizedValue = []
+        break
+      case 'select':
+        normalizedValue = null
+        break
+      default:
+        normalizedValue = ''
+    }
+  }
 
   // 3. Atributos comuns
   const commonProps = {

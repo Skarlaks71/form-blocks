@@ -16,6 +16,7 @@ import VSelect from 'vue-select'
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 import { createInputNode } from '../../composables/formRenderer'
+import { getRegistry } from '../../composables/componentRegistry'
 
 export default {
   name: 'FormInputsBlocks',
@@ -28,16 +29,21 @@ export default {
     const formData = inject('formData')
     const errors = inject('errors')
 
+    const registry = getRegistry()
+
     return () => {
       const { input } = props
       if (input.dependent?.value === false) return null
+
+      const registryItem = registry[input.component] || {}
+      const supportsLabelFor = registryItem.supportsLabelFor ?? true
 
       return h(Transition, { name: 'fade' }, {
         default: () => h(FbCol, { cols: 12, ...input.colProps }, {
           default: () => h(FbInputBlock, {
             id: `input-${input.model}`,
             label: input.label,
-            labelFor: input.labelFor,
+            labelFor: input.labelFor ? input.labelFor : supportsLabelFor,
             state: errors.value?.[input.back] ? false : null,
             invalidFeedback: errors.value?.[input.back],
             ...input.inputBlockProps,

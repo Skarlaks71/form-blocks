@@ -20,7 +20,13 @@ export default {
       if (Array.isArray(props.modelValue)) {
         return props.modelValue.includes(value)
       }
-      return props.modelValue === value
+
+      // Se for booleano e true, e o valor da opção for algo como 'true' ou 1
+      if (typeof props.modelValue === 'boolean') {
+        return props.modelValue === true && value === true
+      }
+
+      return false
     }
 
     const onChange = (value) => {
@@ -30,9 +36,11 @@ export default {
         const index = newValue.indexOf(value)
         if (index > -1) newValue.splice(index, 1)
         else newValue.push(value)
+      } else if (typeof props.modelValue === 'boolean') {
+        newValue = !props.modelValue
       } else {
         // Toggle para valor booleano ou único
-        newValue = props.modelValue === value ? null : value
+        newValue = [value]
       }
       emit('update:modelValue', newValue)
       emit('change', newValue)
@@ -48,7 +56,7 @@ export default {
 
     const getOptionClasses = (option) => [
       props.button ? `${PREFIX}-checkbox__label--button` : 
-      props.switch ? `${PREFIX}-checkbox__label--switch` : `${PREFIX}-checkbox`,
+      props.switch ? `${PREFIX}-checkbox__label--switch` : `${PREFIX}-checkbox__label`,
       {
         [`${PREFIX}-checkbox__label--button--${props.buttonVariant}`]: props.button,
         [`${PREFIX}-checkbox__label--button--active`]: props.button && isChecked(option.value),
@@ -74,7 +82,12 @@ export default {
             class: `${PREFIX}-checkbox__input`,
             onChange: () => onChange(option.value)
           }),
-          h('label', { class: getOptionClasses(option), for: id }, option.label)
+          h('label', {
+            class: [
+              ...getOptionClasses(option),
+              ((index === 0 && props.button) ? `${PREFIX}-checkbox__label--button--is-first`: ''),
+              ((index === props.options.length - 1 && props.button) ? `${PREFIX}-checkbox__label--button--is-last`: ''),
+            ], for: id }, option.label)
         ])
       })
     )

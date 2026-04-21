@@ -13,6 +13,7 @@ import FbCol from '../grid/FbCol'
 import FormBlocksRepeaterItem from './FormBlocksRepeaterItem'
 import { useCloneDeep } from '@form-blocks/core'
 import { PREFIX } from '@form-blocks/core/constants'
+import FbButton from '../FbButton'
 
 export default {
   name: 'FormBlocksRepeater',
@@ -74,7 +75,7 @@ export default {
             }),
             // Coluna com o botão de remover
             h(FbCol, { md: 12, lg: 2 }, {
-              default: () => h('button', {
+              default: () => h(FbButton, {
                 variant: 'danger',
                 onClick: () => removeItem(key)
               }, { default: () => 'Remover' })
@@ -89,11 +90,13 @@ export default {
           default: () => renderItems()
         }),
         // Botão de Adicionar
-        h('div', { class: 'mt-3' }, [
-          h('button', {
-            variant: 'primary', // Adicionando uma cor padrão
-            onClick: addItem 
-          }, { default: () => 'Adicionar' })
+        h(FbRow, { class: 'mt-3' }, [
+          h(FbCol, { md: 12, lg: 2 }, [
+            h(FbButton, {
+              variant: 'primary', // Adicionando uma cor padrão
+              onClick: addItem 
+            }, { default: () => 'Adicionar' })
+          ]),
         ])
       ])
     }

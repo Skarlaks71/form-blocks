@@ -6,6 +6,7 @@ import vueLogo from '../../assets/vue.svg'
 import useOrganForms from '../../composables/forms/useOrganForms'
 import useTestForm from '../../composables/useTestForm'
 import { useFormHandle } from '../../composables/useFormHandle'
+import FbButton from '../FbButton'
 
 const props = defineProps({
   // as variaveis do model que geram inputs no front
@@ -51,7 +52,11 @@ const handleSubmit = () => {
         :errors="formErrors"
       >
       </form-blocks>
-      <button type="submit">enviar</button>
+      <fb-row>
+        <fb-col cols=12>
+          <fb-button type="submit" texture="waves">enviar</fb-button>
+        </fb-col>
+      </fb-row>
     </form>
     <fb-row>
       <fb-col>

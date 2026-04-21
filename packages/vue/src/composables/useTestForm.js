@@ -38,8 +38,8 @@ export default () => {
               { label: 'gato', value: 'cat' },
               { label: 'baleia', value: 'whale' },
             ],
-            // inline: true,
-            // button: true,
+            inline: true,
+            button: true,
           },
         },
         {
@@ -52,8 +52,9 @@ export default () => {
               { label: 'Gato', value: 'cat' },
               { label: 'baleia', value: 'whale' },
             ],
-            inline: true,
-            switch: true,
+            // inline: true,
+            // button: true,
+            // switch: true,
           },
         },
       ]
