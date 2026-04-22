@@ -31,7 +31,7 @@ export default {
       const formData = toRef(props, 'formData')
 
       // 1. Container lateral (equivalente ao b-col md="12" lg="10")
-      return h(FbCol, { md: 12, lg: 10 }, {
+      return h(FbCol, { cols: 10 }, {
         default: () => h(FbRow, null, {
           default: () => forms.map((input, formKey) => {
             const slotName = `input(${input.formKey || formKey})`

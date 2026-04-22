@@ -92,8 +92,9 @@ export default {
               formData: item
             }),
             // Coluna com o botão de remover
-            h(FbCol, { md: 12, lg: 2 }, {
+            h(FbCol, { cols: 2 }, {
               default: () => h(FbButton, {
+                class: `${PREFIX}-btn-repeater-delete`,
                 variant: btnRemoveVariant,
                 texture: btnRemoveTexture,
                 clean: noTexture ? noTexture : btnRemoveClean,

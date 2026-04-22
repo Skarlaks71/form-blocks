@@ -1,7 +1,33 @@
 @use "../abstract/config";
+@use "sass:map";
+
+$-fb: config.$fb-prefix;
 
 .#{config.$fb-prefix}-repeater {
+  width: 100%;
+
+  .#{$-fb}-btn-repeater-delete {
+    margin: 1rem 0;
     width: 100%;
+    height: calc(100% - 2rem);
+    box-sizing: border-box;
+    .#{$-fb}-button__content {
+      display: none;
+      transform: rotateZ(-90deg);
+    }
+
+    @media (min-width: #{map.get(config.$breakpoints, 'sm')}) {
+      // height: auto;
+      .#{$-fb}-button__content {
+        display: inline-block;
+        transform: rotateZ(0deg);
+      }
+    }
+
+    @media (min-width: #{map.get(config.$breakpoints, 'lg')}) {
+      height: auto;
+    }
+  }
 }
 
 .#{config.$fb-prefix}-disabled-row-repeater {

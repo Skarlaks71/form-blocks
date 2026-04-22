@@ -2,6 +2,13 @@
 
 $fb-prefix: "fb" !default; // "fb" de FormBlocks
 
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+
 $fb-colors: (
     primary: #ff7a00,
     complementary: #0085ff,

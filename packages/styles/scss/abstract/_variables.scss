@@ -5,11 +5,16 @@
 $fb: config.$fb-prefix;
 
 :root {
+    @each $breakpoint, $val in config.$breakpoints {
+        --#{$fb}-bp-#{$breakpoint}: #{$val};
+    }
+
     @each $name, $color in config.$fb-colors {
         --#{$fb}-color-#{$name}: #{$color};
         --#{$fb}-color-#{$name}-hover: #{color.adjust($color, $lightness: -5%)};
         --#{$fb}-color-#{$name}-hover-light: #{color.adjust($color, $lightness: 40%)};
     }
+    
     @each $name, $color in config.$fb-text-colors {
         --#{$fb}-color-text-#{$name}: #{$color};
     }

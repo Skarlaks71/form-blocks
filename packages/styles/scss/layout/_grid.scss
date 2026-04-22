@@ -1,13 +1,6 @@
 @use 'sass:math';
 @use "../abstract/config";
 
-$breakpoints: (
-  sm: 576px,
-  md: 768px,
-  lg: 992px,
-  xl: 1200px
-);
-
 .#{config.$fb-prefix}-container {
   width: 100%;
   margin-right: auto;
@@ -58,7 +51,7 @@ $breakpoints: (
   width: auto;
 }
 
-@each $key, $val in $breakpoints {
+@each $key, $val in config.$breakpoints {
   @media (min-width: $val) {
     .#{config.$fb-prefix}-col-#{$key}-auto {
       flex: 0 0 auto;

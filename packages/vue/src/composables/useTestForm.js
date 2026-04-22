@@ -91,6 +91,8 @@ export default () => {
           component: 'input',
           limitChars: 50,
         },
+        'nome',
+        'login',
       ],
     },
   ]
