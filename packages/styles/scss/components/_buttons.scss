@@ -1,9 +1,10 @@
 @use "../abstract/config";
 @use "../abstract/mixins" as m;
+@use "sass:color";
 
-$fb-textures: carbon, waves, grid, stripes;
+$fbb: config.$fb-prefix;
 
-.#{config.$fb_prefix}-button {
+.#{$fbb}-button {
     width: 100%;
     display: inline-flex;
     align-items: center;
@@ -17,34 +18,67 @@ $fb-textures: carbon, waves, grid, stripes;
 
     font-size: 14px;
     transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
 
-    &--primary {
-        background-color: #F37021; // Seu Laranja FormBlocks
-        color: #fff; // Contraste preto
-        font-weight: 600;
-        
-        &:hover {
-        background-color: darken(#F37021, 5%);
+    @each $color, $val in config.$fb-colors {
+        &--#{$color} {
+            background-color: var(--#{$fbb}-color-#{$color});
+            color: var(--#{$fbb}-color-text-light);
+            font-weight: 600;
+    
+            &:hover {
+                background-color: var(--#{$fbb}-color-#{$color}-hover);
+            }
         }
     }
 
-    &--danger {
-        background: #ef4444;
-        color: #fff;
-        font-weight: 600;
-        
-        &:hover {
-        background-color: darken(#ef4444, 5%);
+    @each $color, $val in config.$fb-colors {
+        &--outline-#{$color} {
+            --#{$fbb}-texture-opacity: 0.1;
+            background-color: transparent;
+            border: 1px solid var(--#{$fbb}-color-#{$color});
+            color: var(--#{$fbb}-color-#{$color});
+            font-weight: 600;
+    
+            &:hover {
+                background-color: var(--#{$fbb}-color-#{$color}-hover);
+                color: var(--#{$fbb}-color-text-light);
+            }
         }
     }
 
-    @each $texture in $fb-textures {
+    @each $texture in config.$fb-textures {
         &--texture-#{$texture} {
-            @include m.apply-texture($texture, 0.3);
+            position: relative;
+    
+            &::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                z-index: 1;
+
+                @if $texture == carbon {
+                    background-color: black;
+                } @else {
+                    background-color: currentColor;
+                }
+    
+                @include m.apply-texture($texture);
+    
+                opacity: var(--#{$fbb}-texture-opacity, 0.3);
+    
+                pointer-events: none;
+
+            }
 
             &:hover {
-                @include m.apply-texture($texture, 0.4);
+                &::before {
+                    --#{$fbb}-texture-opacity: 0.5;
+                    z-index: 1;
+                }
             }
+
         }
     }
 
@@ -86,6 +120,8 @@ $fb-textures: carbon, waves, grid, stripes;
     &__content {
         display: inline-flex;
         align-items: center;
+        position: relative;
+        z-index: 5;
     }
 }
 

@@ -1,22 +1,29 @@
+@use "./config" as *;
+@use "sass:map";
+@use "sass:color";
+
+$fb: $fb-prefix;
+
 @mixin button-variant-base {
     margin-top: -1px;
     padding: 0.375rem 0.75rem;
-    border: 1px solid #0d6efd;
-    color: #0d6efd;
+    border: 1px solid var(--#{$fb}-color-primary);
+    color: var(--#{$fb}-color-primary);
     transition: all 0.2s;
     user-select: none;
     cursor: pointer;
 
     &:hover {
-        background-color: rgba(13, 110, 253, 0.05);
+        background-color: var(--#{$fb}-color-primary);
+        color: var(--#{$fb}-color-text-light);
     }
 
     &--active {
-        background-color: #0d6efd;
+        background-color: var(--#{$fb}-color-primary);
         color: #fff;
         &:hover {
-            color: #0d6efd;
-            background-color: rgba($color:#0d6efd, $alpha: 0.3);
+            color: var(--#{$fb}-color-primary-hover);
+            background-color: var(--#{$fb}-color-primary-hover-light);
         }
     }
 }
@@ -41,8 +48,8 @@
 @mixin button-variant-base-inline {
     margin-left: -1px;
     padding: 0.375rem 0.75rem;
-    border: 1px solid #0d6efd;
-    color: #0d6efd;
+    border: 1px solid var(--#{$fb}-color-primary);
+    color: var(--#{$fb}-color-primary);
     cursor: pointer;
     transition: all 0.2s;
     user-select: none;
@@ -59,50 +66,52 @@
     }
 
     &:hover {
-        background-color: rgba(13, 110, 253, 0.05);
+        background-color: var(--#{$fb}-color-primary);
+        color: var(--#{$fb}-color-text-light);
     }
 
     &--active {
-        background-color: #0d6efd;
+        background-color: var(--#{$fb}-color-primary);
         color: #fff;
         &:hover {
-            color: #0d6efd;
-            background-color: rgba($color:#0d6efd, $alpha: 0.3);
+            color: var(--#{$fb}-color-primary-hover);
+            background-color: var(--#{$fb}-color-primary-hover-light);
         }
     }
 }
 
-@mixin texture-stripes($opacity: 0.9) {
+@mixin texture-stripes() {
     // Cria as linhas diagonais (estilo da sua segunda imagem)
-    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 20L20 0M-1 1L1 -1M19 21L21 19' stroke='rgba(255,255,255,#{$opacity})' stroke-width='3' stroke-linecap='square'/%3E%3C/svg%3E");
-    background-repeat: repeat;
+    mask-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 20L20 0M-1 1L1 -1M19 21L21 19' stroke='white' stroke-width='3' stroke-linecap='square'/%3E%3C/svg%3E");
+    mask-repeat: repeat;
 }
 
-@mixin texture-grid($opacity: 0.1) {
-  // Estilo "Pine" (quadriculado)
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 0H0v12' fill='none' stroke='rgba(255,255,255,#{$opacity})' stroke-width='1'/%3E%3C/svg%3E");
-  background-repeat: repeat;
+@mixin texture-grid() {
+    // Estilo "Pine" (quadriculado)
+    mask-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 0H0v12' fill='none' stroke='white' stroke-width='1'/%3E%3C/svg%3E");
+    mask-repeat: repeat;
 }
 
-@mixin texture-waves($opacity: 0.1) {
-  // Estilo "Oak" (ondulado)
-  background-image: url("data:image/svg+xml,%3Csvg width='20' height='10' viewBox='0 0 20 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q 5 0, 10 5 T 20 5' fill='none' stroke='rgba(255,255,255,#{$opacity})' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 20px 10px;
+@mixin texture-waves() {
+    mask-image: url("data:image/svg+xml, %3Csvg width='20' height='10' viewBox='0 0 20 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q 5 0, 10 5 T 20 5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+    mask-repeat: repeat;
+    mask-size: 20px 10px;
 }
 
-@mixin texture-carbon($opacity: 0.15) {
-  background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='rgba(0,0,0,#{$opacity})'%3E%3Cpath d='M5 0h1L0 6V5zm1 5v1H5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+@mixin texture-carbon() {
+    mask-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='white'%3E%3Cpath d='M5 0h1L0 6V5zm1 5v1H5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    mask-repeat: repeat;
+    mask-size: 6px 6px;
 }
 
-@mixin apply-texture($name, $opacity) {
-  @if $name == carbon {
-    @include texture-carbon($opacity);
-  } @else if $name == waves {
-    @include texture-waves($opacity);
-  } @else if $name == grid {
-    @include texture-grid($opacity);
-  } @else if $name == stripes {
-    @include texture-stripes($opacity);
-  }
+@mixin apply-texture($name) {
+    @if $name == carbon {
+        @include texture-carbon();
+    } @else if $name == waves {
+        @include texture-waves();
+    } @else if $name == grid {
+        @include texture-grid();
+    } @else if $name == stripes {
+        @include texture-stripes();
+    }
 }

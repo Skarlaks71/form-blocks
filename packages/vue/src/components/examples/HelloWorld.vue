@@ -54,7 +54,7 @@ const handleSubmit = () => {
       </form-blocks>
       <fb-row>
         <fb-col cols=12>
-          <fb-button type="submit" texture="waves">enviar</fb-button>
+          <fb-button type="submit" variant="outline-complementary" clean>enviar</fb-button>
         </fb-col>
       </fb-row>
     </form>

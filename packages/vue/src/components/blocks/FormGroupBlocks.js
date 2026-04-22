@@ -16,6 +16,7 @@ export default {
 
     return () => {
       const { group, groupKey } = props
+      console.log('groups', group)
 
       // Lógica de dependência do grupo (v-if)
       if (group.dependent?.value === false) return null
@@ -43,7 +44,8 @@ export default {
               : h(FormBlocksRepeater, {
                   forms: group.forms,
                   groupModel: group.groupModel,
-                  groupFormData: group.groupFormData
+                  groupFormData: group.groupFormData,
+                  ...group.repeaterProps,
                 })
           )
         } else {

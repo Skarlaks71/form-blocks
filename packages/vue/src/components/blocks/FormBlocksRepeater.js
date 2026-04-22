@@ -21,9 +21,27 @@ export default {
     forms: { type: Array, default: () => [] },
     groupModel: { type: String, default: 'groups' },
     groupFormData: { type: Object, default: () => ({}) },
+    btnAddVariant: { type: String, default: 'primary' },
+    btnAddTexture: { type: String, default: 'carbon' },
+    btnAddClean: { type: Boolean, default: false },
+    btnRemoveVariant: { type: String, default: 'danger' },
+    btnRemoveTexture: { type: String, default: 'carbon' },
+    btnRemoveClean: { type: Boolean, default: false },
+    noTexture: { type: Boolean, default: false },
   },
   setup(props) {
     const formData = inject('formData')
+    const {
+      btnAddVariant,
+      btnAddTexture,
+      btnAddClean,
+      btnRemoveVariant,
+      btnRemoveTexture,
+      btnRemoveClean,
+      noTexture,
+    } = props
+
+    console.log('btn variant: ', btnAddVariant)
 
     // Lógica de clonagem para novos itens
     const cloneObject = obj => useCloneDeep(toRaw(obj))
@@ -76,7 +94,9 @@ export default {
             // Coluna com o botão de remover
             h(FbCol, { md: 12, lg: 2 }, {
               default: () => h(FbButton, {
-                variant: 'danger',
+                variant: btnRemoveVariant,
+                texture: btnRemoveTexture,
+                clean: noTexture ? noTexture : btnRemoveClean,
                 onClick: () => removeItem(key)
               }, { default: () => 'Remover' })
             })
@@ -93,7 +113,9 @@ export default {
         h(FbRow, { class: 'mt-3' }, [
           h(FbCol, { md: 12, lg: 2 }, [
             h(FbButton, {
-              variant: 'primary', // Adicionando uma cor padrão
+              variant: btnAddVariant, // Adicionando uma cor padrão
+              texture: btnAddTexture,
+              clean: noTexture ? noTexture : btnAddClean,
               onClick: addItem 
             }, { default: () => 'Adicionar' })
           ]),

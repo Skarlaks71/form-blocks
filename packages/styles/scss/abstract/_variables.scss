@@ -1,0 +1,24 @@
+@use "config";
+@use "sass:color";
+@use "sass:map";
+
+$fb: config.$fb-prefix;
+
+:root {
+    @each $name, $color in config.$fb-colors {
+        --#{$fb}-color-#{$name}: #{$color};
+        --#{$fb}-color-#{$name}-hover: #{color.adjust($color, $lightness: -5%)};
+        --#{$fb}-color-#{$name}-hover-light: #{color.adjust($color, $lightness: 40%)};
+    }
+    @each $name, $color in config.$fb-text-colors {
+        --#{$fb}-color-text-#{$name}: #{$color};
+    }
+
+    --#{$fb}-input-height: #{config.$fb-input-height};
+    --#{$fb}-input-bg: #fff;
+    --#{$fb}-input-border-color: #{config.$fb-border-color};
+    --#{$fb}-input-border-color-focus: #{color.adjust(map.get(config.$fb-colors, 'primary'), $lightness: 25%)};
+    --#{$fb}-input-border-radius: #{config.$fb-border-radius};
+    
+    --fb-texture-opacity: 0.3;
+}

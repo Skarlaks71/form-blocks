@@ -2,25 +2,25 @@
 @use "sass:color";
 @use "../abstract/config";
 @use "../abstract/mixins" as m;
+@use "../abstract/variables" as v;
+
+$fb: config.$fb-prefix;
 
 $fb-primary: #0d6efd !default;
 $fb-error: #dc3545 !default;
 $fb-success: #198754 !default;
 $fb-gray-600: #6c757d !default;
 $fb-border-color: #dee2e6 !default;
-$fb-input-bg: #fff !default;
-$fb-input-focus-shadow: rgba($fb-primary, 0.25) !default;
 $fb-transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-$fb-input-height: 2.375rem; // Altura padrão aproximada (padding + line-height)
+
 $fb-border-color: #dee2e6;
-$fb-border-radius: 0.375rem;
 
 @mixin fb-validation-icon($color) {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='#{str-replace(meta.inspect($color), '#', '%23')}'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='#{str-replace(meta.inspect($color), '#', '%23')}' stroke='none'/%3e%3c/svg%3e");
 }
 
 // Bloco Principal: FbInputBlock
-.#{config.$fb-prefix}-input-block {
+.#{$fb}-input-block {
     margin-bottom: 1rem;
     width: 100%;
     display: flex;
@@ -31,7 +31,7 @@ $fb-border-radius: 0.375rem;
     &__label {
         margin-bottom: 0.5rem;
         font-weight: 500;
-        color: #212529;
+        color: var(--#{$fb}-color-text-dark);
 
         // Modificadores de Alinhamento
         &--left { text-align: left; }
@@ -55,14 +55,14 @@ $fb-border-radius: 0.375rem;
     &__description {
         margin-top: 0.25rem;
         font-size: 0.875em;
-        color: $fb-gray-600;
+        color: var(--#{$fb}-color-text-info);
     }
 
     &__feedback {
         width: 100%;
         margin-top: 0.25rem;
         font-size: 0.875em;
-        color: $fb-error;
+        color: var(--#{$fb}-color-danger);
         display: block; // Garante exibição no fluxo do Transition
     }
 
@@ -75,34 +75,33 @@ $fb-border-radius: 0.375rem;
         font-weight: 400;
         line-height: 1.5;
         color: #212529;
-        background-color: $fb-input-bg;
-        border: 1px solid $fb-border-color;
+        background-color: var(--#{$fb}-input-bg);
+        border: 1px solid var(--#{$fb}-input-border-color);
         border-radius: 0.375rem;
-        transition: $fb-transition;
+        transition: --#{$fb}-transition;
         appearance: none;
 
         &:focus {
-            border-color: color.adjust($fb-primary, $lightness: 25%);
+            border-color: var(--#{$fb}-input-border-color-focus);
             outline: 0;
-            box-shadow: 0 0 0 0.25rem $fb-input-focus-shadow;
         }
 
         // Modificadores de Estado
         &--invalid {
-            border-color: $fb-error;
+            border-color: var(--#{$fb}-color-danger);
             padding-right: calc(1.5em + 0.75rem);
-            @include fb-validation-icon($fb-error);
+            @include fb-validation-icon(var(--#{$fb}-color-danger));
             background-repeat: no-repeat;
             background-position: right calc(0.375em + 0.1875rem) center;
             background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 
             &:focus {
-                box-shadow: 0 0 0 0.25rem rgba($fb-error, 0.25);
+                box-shadow: 0 0 0 0.25rem rgba(var(--#{$fb}-color-danger), 0.25);
             }
         }
 
         &--valid {
-            border-color: $fb-success;
+            border-color: var(--#{$fb}-color-success);
             // Poderia adicionar o ícone de check aqui se desejar
         }
     }
@@ -114,10 +113,10 @@ $fb-border-radius: 0.375rem;
         // O container principal que simula o input
         .vs__dropdown-toggle {
             padding: 0; // Resetamos o padding original do v-select
-            min-height: $fb-input-height;
-            border: 1px solid $fb-border-color;
-            border-radius: $fb-border-radius;
-            background: #fff;
+            min-height: var(--#{$fb}-input-height);
+            border: 1px solid var(--#{$fb}-input-border-color);
+            border-radius: var(--#{$fb}-input-border-radius);
+            background: var(--#{$fb}-input-bg);
             transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
 
@@ -129,8 +128,8 @@ $fb-border-radius: 0.375rem;
         .vs__search {
             margin: 0;
             padding: 0;
-            height: calc(#{$fb-input-height} - 2px); // Desconta a borda
-            line-height: calc(#{$fb-input-height} - 2px);
+            height: calc(var(--#{$fb}-input-height) - 2px); // Desconta a borda
+            line-height: calc(var(--#{$fb}-input-height) - 2px);
             border: none;
             
             &::placeholder {
@@ -151,8 +150,7 @@ $fb-border-radius: 0.375rem;
 
         // Estado de Focus
         &.vs--open .vs__dropdown-toggle {
-            border-color: #86b7fe;
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+            border-color: var(--#{$fb}-input-border-color-focus);
         }
 
         // Modificador de Erro (BEM no pai refletindo no filho)
@@ -175,7 +173,7 @@ $fb-border-radius: 0.375rem;
     @return $string;
 }
 
-.#{config.$fb-prefix}-textarea {
+.#{$fb}-textarea {
   display: block;
   width: 100%;
   padding: 0.375rem 0.75rem;
@@ -230,7 +228,7 @@ $fb-border-radius: 0.375rem;
   }
 }
 
-.#{config.$fb-prefix}-radio-group {
+.#{$fb}-radio-group {
     max-width: fit-content;
     display: flex;
     flex-wrap: wrap;
@@ -243,7 +241,7 @@ $fb-border-radius: 0.375rem;
         min-width: fit-content;
         justify-content: stretch;
 
-        .#{config.$fb-prefix}-radio {
+        .#{$fb}-radio {
             width: 100%;
 
             &__label {
@@ -252,7 +250,7 @@ $fb-border-radius: 0.375rem;
                 }
             }
         }
-        &:has(.#{config.$fb-prefix}-radio__label--button) {
+        &:has(.#{$fb}-radio__label--button) {
             gap: 0;
         }
     }
@@ -263,19 +261,19 @@ $fb-border-radius: 0.375rem;
         gap: 1rem;
         align-items: center;
 
-        .#{config.$fb-prefix}-radio__label {
+        .#{$fb}-radio__label {
             // Variante BOTÃO
             &--button {
                 @include m.button-variant-base-inline;
             }
         }
 
-        &:has(.#{config.$fb-prefix}-radio__label--button) {
+        &:has(.#{$fb}-radio__label--button) {
             gap: 0;
         }
     }
 
-    .#{config.$fb-prefix}-radio {
+    .#{$fb}-radio {
         min-height: 1.5rem;
         position: relative;
         display: flex;
@@ -288,7 +286,7 @@ $fb-border-radius: 0.375rem;
             z-index: -1;
         
             // Estilo quando o Input (escondido) está checado e é a variante padrão
-            &:checked + .#{config.$fb-prefix}-radio__label::before {
+            &:checked + .#{$fb}-radio__label::before {
                 background-color: #000000;
                 border-color: #000000;
                 box-shadow: inset 0 0 0 3px #fff;
@@ -322,17 +320,7 @@ $fb-border-radius: 0.375rem;
     }
 }
 
-
-
-
-
-// Estados de validação para o grupo
-// .is-invalid {
-//     border-color: #dc3545 !important;
-//     color: #dc3545 !important;
-// }
-
-.#{config.$fb-prefix}-checkbox-group {
+.#{$fb}-checkbox-group {
     display: flex;
     gap: 0.75rem;
     &--vertical {
@@ -343,7 +331,7 @@ $fb-border-radius: 0.375rem;
         justify-content: stretch;
         align-items: flex-start;
 
-        .#{config.$fb-prefix}-checkbox {
+        .#{$fb}-checkbox {
             width: 100%;
             &__label {
                 &--button {
@@ -352,7 +340,7 @@ $fb-border-radius: 0.375rem;
             }
         }
 
-        &:has(.#{config.$fb-prefix}-checkbox__label--button) {
+        &:has(.#{$fb}-checkbox__label--button) {
             max-width: fit-content;
             gap: 0;
         }
@@ -362,7 +350,7 @@ $fb-border-radius: 0.375rem;
         flex-wrap: wrap;
         align-items: center;
 
-        .#{config.$fb-prefix}-checkbox {
+        .#{$fb}-checkbox {
             &__label {
                 &--button {
                     @include m.button-variant-base-inline;
@@ -370,12 +358,12 @@ $fb-border-radius: 0.375rem;
             }
         }
 
-        &:has(.#{config.$fb-prefix}-checkbox__label--button) {
+        &:has(.#{$fb}-checkbox__label--button) {
             gap: 0;
         }
     }
 
-    .#{config.$fb-prefix}-checkbox {
+    .#{$fb}-checkbox {
         display: flex;
         align-items: center;
         position: relative;
@@ -386,7 +374,7 @@ $fb-border-radius: 0.375rem;
             z-index: -1;
     
             // Checkbox Custom Padrão
-            &:checked + .#{config.$fb-prefix}-checkbox__label::before {
+            &:checked + .#{$fb}-checkbox__label::before {
                 content: "";
                 background-color: #000000;
                 border-color: #000000;
@@ -394,7 +382,7 @@ $fb-border-radius: 0.375rem;
             }
     
             // Lógica do SWITCH
-            &:checked ~ .#{config.$fb-prefix}-checkbox__label--switch {
+            &:checked ~ .#{$fb}-checkbox__label--switch {
                 &::before {
                     background-color: #0d6efd;
                     border-color: #0d6efd;

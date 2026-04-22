@@ -8,7 +8,12 @@ export default () => {
     {
       title: 'Meu Formulário',
       forms: [
-        'Name',
+        {
+          label:'Name',
+          inputBlockProps: {
+            description: 'test'
+          }
+        },
         'Login::email:6',
         'Senha::password:6',
         'Age::number:md2',
@@ -64,6 +69,9 @@ export default () => {
       isRepeater: true,
       groupModel: 'contacts',
       groupFormData: { type: null, value: '' },
+      repeaterProps: {
+        btnAddVariant: 'outline-success',
+      },
       forms: [
         {
           colProps: { md: '12', lg: '3' },

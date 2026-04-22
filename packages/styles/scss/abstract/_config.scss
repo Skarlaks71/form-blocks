@@ -1,1 +1,27 @@
+@use "sass:map";
+
 $fb-prefix: "fb" !default; // "fb" de FormBlocks
+
+$fb-colors: (
+    primary: #ff7a00,
+    complementary: #0085ff,
+    success: #4CAF50,
+    warning: #FFEB3B,
+    danger: #F44336,
+    disable: #E0F2F1,
+);
+    
+$fb-text-colors: (
+    light: #fff,
+    dark: #212529,
+    info: #6c757d,
+);
+
+$fb-textures: carbon, waves, grid, stripes;
+
+$fb-input-bg: #fff !default;
+$fb-input-focus-shadow: rgba(map.get($fb-colors, 'primary'), 0.25) !default;
+
+$fb-border-color: #dee2e6;
+$fb-input-height: 2.375rem; // Altura padrão aproximada (padding + line-height)
+$fb-border-radius: 0.375rem;
