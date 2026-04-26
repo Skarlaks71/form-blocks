@@ -16,7 +16,6 @@ export default {
 
     return () => {
       const { group, groupKey } = props
-      console.log('groups', group)
 
       // Lógica de dependência do grupo (v-if)
       if (group.dependent?.value === false) return null

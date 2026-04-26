@@ -41,7 +41,7 @@ export default {
       noTexture,
     } = props
 
-    console.log('btn variant: ', btnAddVariant)
+    const instanceId = Math.random().toString(36).substring(2, 9);
 
     // Lógica de clonagem para novos itens
     const cloneObject = obj => useCloneDeep(toRaw(obj))
@@ -79,28 +79,34 @@ export default {
       // 1. Renderização da Lista de Itens
       const renderItems = () => getGroupData.value.map((item, key) => {
         return h(FbRow, {
-          key: key, // Em um framework real, o ideal seria um ID único, mas mantemos a chave por agora
+          key: `item-repeater-${instanceId}-${key}`,
           class: [
-            { 'mt-3': key > 0 },
             { [`${PREFIX}-disabled-row-repeater`]: item.deleted }
           ]
         }, {
           default: () => [
+            // Coluna com o botão de remover
+            h(FbCol, { cols: 12, }, {
+              default: () => h('div', {
+                class: `${PREFIX}-repeater__header`,
+              }, [
+                h(FbButton, {
+                  class: `${PREFIX}-btn-repeater-delete`,
+                  variant: btnRemoveVariant,
+                  texture: btnRemoveTexture,
+                  clean: noTexture ? noTexture : btnRemoveClean,
+                  onClick: () => removeItem(key),
+                }, { default: () => 'Remover' })
+              ]),
+            }),
             // O Item do repetidor com os inputs
             h(FormBlocksRepeaterItem, {
               forms: props.forms,
-              formData: item
+              formData: item,
+              uid: instanceId,
+              index: key,
+              class: `${PREFIX}-repeater__content`
             }),
-            // Coluna com o botão de remover
-            h(FbCol, { cols: 2 }, {
-              default: () => h(FbButton, {
-                class: `${PREFIX}-btn-repeater-delete`,
-                variant: btnRemoveVariant,
-                texture: btnRemoveTexture,
-                clean: noTexture ? noTexture : btnRemoveClean,
-                onClick: () => removeItem(key)
-              }, { default: () => 'Remover' })
-            })
           ]
         })
       })
@@ -111,16 +117,21 @@ export default {
           default: () => renderItems()
         }),
         // Botão de Adicionar
-        h(FbRow, { class: 'mt-3' }, [
-          h(FbCol, { md: 12, lg: 2 }, [
-            h(FbButton, {
-              variant: btnAddVariant, // Adicionando uma cor padrão
-              texture: btnAddTexture,
-              clean: noTexture ? noTexture : btnAddClean,
-              onClick: addItem 
-            }, { default: () => 'Adicionar' })
-          ]),
-        ])
+        h(FbRow, {}, {
+          default: () => [
+            h(FbCol, { md: 12, lg: 2 }, {
+              default: () => [
+                h(FbButton, {
+                  class: `${PREFIX}-btn-repeater-add`,
+                  variant: btnAddVariant, // Adicionando uma cor padrão
+                  texture: btnAddTexture,
+                  clean: noTexture ? noTexture : btnAddClean,
+                  onClick: addItem 
+                }, { default: () => 'Adicionar' })
+              ]
+            }),
+          ]
+        })
       ])
     }
   }

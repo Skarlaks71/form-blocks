@@ -5,7 +5,7 @@ import { PREFIX } from '@form-blocks/core/constants'
 
 export const createInputNode = ({ input, formData, errors, slotProps }) => {
   const registry = getRegistry()
-  
+
   // 1. Resolver o componente
   const componentName = input.component || 'input'
   const registryItem = registry[componentName]
@@ -37,10 +37,10 @@ export const createInputNode = ({ input, formData, errors, slotProps }) => {
     'onUpdate:modelValue': (val) => (formData.value[input.model] = val),
     state: slotProps.state,
     'aria-describedby': slotProps.ariaDescribedby,
-    ...input.othersProps,
-    ...(input.maskaOptions || {}),
-    mask: input.maska,
-    limit: input.limitChars,
+    ...input.iProps,
+    // ...(input.maskaOptions || {}),
+    // mask: input.maska,
+    // limit: input.limitChars,
     ...Object.fromEntries(
       Object.entries(input.events || {}).map(([event, handler]) => [
         `on${event.charAt(0).toUpperCase() + event.slice(1)}`, 

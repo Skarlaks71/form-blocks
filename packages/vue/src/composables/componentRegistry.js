@@ -17,7 +17,7 @@ const registry = {
   },
   'flatpickr': {
     component: flatPickr,
-    supportsLabelFor: true,
+    supportsLabelFor: false,
   },
   'textarea': {
     component: FbTextarea,

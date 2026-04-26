@@ -26,4 +26,6 @@ $fb: config.$fb-prefix;
     --#{$fb}-input-border-radius: #{config.$fb-border-radius};
     
     --fb-texture-opacity: 0.3;
+
+    --#{fb}-hr-color: #{config.$fb-hr-color};
 }

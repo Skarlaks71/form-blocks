@@ -10,9 +10,18 @@ export const useFormHandle = () => {
     const normalizedGroups = groupBase.map(group => ({
       ...group,
       forms: group.forms.map(input => {
-        // Se for string, vira objeto com label e model (baseado no label)
+        // Se for string, vira objeto com label
         if (typeof input === 'string') {
           return parseStringShorthand(input)
+        }
+        if (Array.isArray(input)) {
+          if (typeof input[0] !== 'string') {
+            throw new Error('FB 001: The first element needs to be String!')
+          }
+
+          const parse = parseStringShorthand(input[0])
+          parse.iProps = { ...parse.iProps, options: input[1] }
+          return parse
         }
         return input
       })

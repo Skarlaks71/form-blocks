@@ -4,64 +4,39 @@ export default () => {
     { label: 'Administração Indireta', value: 'I' },
   ]
 
+  const radioOptions = [
+    { label: 'carro', value: 'car' },
+    { label: 'gato', value: 'cat' },
+    { label: 'baleia', value: 'whale' },
+  ]
+
   const groupBase = [
     {
       title: 'Meu Formulário',
       forms: [
-        {
-          label:'Name',
-          inputBlockProps: {
-            description: 'test'
-          }
-        },
-        'Login::email:6',
+        'Name',
+        'Login::email:12:md3',
         'Senha::password:6',
-        'Age::number:md2',
-        {
-          colProps: { md: '12', lg: '4', class: 'mt-2' },
-          label: 'Tipo do Órgão',
-          labelFor: false,
-          component: 'select',
-          othersProps: {
-            options: administrationTypeOptions,
-            filterable: true,
-            reduce: val => val.value,
-          },
-        },
-        {
-          label: 'Flatpickr',
-          component: 'flatpickr',
-          labelFor: false,
-        },
-        {
-          label: 'Radio',
-          component: 'radio',
-          othersProps: {
-            name: 'things',
-            options: [
-              { label: 'carro', value: 'car' },
-              { label: 'gato', value: 'cat' },
-              { label: 'baleia', value: 'whale' },
-            ],
-            inline: true,
-            button: true,
-          },
-        },
-        {
-          label: 'Checkbox',
-          component: 'checkbox',
-          othersProps: {
-            name: 'thingsC',
-            options: [
-              { label: 'carro', value: 'car' },
-              { label: 'Gato', value: 'cat' },
-              { label: 'baleia', value: 'whale' },
-            ],
-            // inline: true,
-            // button: true,
-            // switch: true,
-          },
-        },
+        'Age::search:md2',
+        ['Tipo do Órgão::select:md12:lg4:filterable', administrationTypeOptions],
+        'Flatpickr::date',
+        ['Radio::radio:name=things:inline:button=true|b', radioOptions],
+        ['Checkbox::checkbox:name=thingsC', radioOptions],
+        // {
+        //   label: 'Checkbox',
+        //   component: 'checkbox',
+        //   iProps: {
+        //     name: 'thingsC',
+        //     options: [
+        //       { label: 'carro', value: 'car' },
+        //       { label: 'Gato', value: 'cat' },
+        //       { label: 'baleia', value: 'whale' },
+        //     ],
+        //     // inline: true,
+        //     // button: true,
+        //     // switch: true,
+        //   },
+        // },
       ]
     },
     {
@@ -71,26 +46,11 @@ export default () => {
       groupFormData: { type: null, value: '' },
       repeaterProps: {
         btnAddVariant: 'outline-success',
+        dileted: true,
       },
       forms: [
-        {
-          colProps: { md: '12', lg: '3' },
-          label: 'Tipo',
-          labelFor: false,
-          component: 'select',
-          limitChars: 11,
-          othersProps: {
-            options: administrationTypeOptions,
-            filterable: true,
-            reduce: val => val.value,
-          },
-        },
-        {
-          colProps: { md: '12', lg: '3' },
-          label: 'Valor',
-          component: 'input',
-          limitChars: 50,
-        },
+        ['Tipo::select:md12:lg3:filterable', administrationTypeOptions],
+        'Valor::mask=####-##:md12:lg3',
         'nome',
         'login',
       ],

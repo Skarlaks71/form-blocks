@@ -6,28 +6,40 @@ $-fb: config.$fb-prefix;
 .#{config.$fb-prefix}-repeater {
   width: 100%;
 
-  .#{$-fb}-btn-repeater-delete {
-    margin: 1rem 0;
+  &__header {
+    // margin-left: auto;
+    // justify-self: end;
     width: 100%;
-    height: calc(100% - 2rem);
-    box-sizing: border-box;
-    .#{$-fb}-button__content {
-      display: none;
-      transform: rotateZ(-90deg);
-    }
+    display: flex;
+    justify-content: end;
 
-    @media (min-width: #{map.get(config.$breakpoints, 'sm')}) {
-      // height: auto;
+    .#{$-fb}-btn-repeater-delete {
+      margin: 1rem 0;
+      width: auto;
+      box-sizing: border-box;
       .#{$-fb}-button__content {
-        display: inline-block;
-        transform: rotateZ(0deg);
+        // display: none;
+      }
+  
+      @media (min-width: #{map.get(config.$breakpoints, 'sm')}) {
+        // height: auto;
+        .#{$-fb}-button__content {
+        }
+      }
+  
+      @media (min-width: #{map.get(config.$breakpoints, 'lg')}) {
       }
     }
-
-    @media (min-width: #{map.get(config.$breakpoints, 'lg')}) {
-      height: auto;
-    }
   }
+
+  &__content {
+    border-bottom: 1px solid var(--#{$-fb}-input-border-color);
+  }
+
+  .#{$-fb}-btn-repeater-add {
+    margin: 1rem 0;
+  }
+
 }
 
 .#{config.$fb-prefix}-disabled-row-repeater {

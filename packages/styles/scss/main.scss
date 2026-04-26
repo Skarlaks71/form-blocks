@@ -1,7 +1,14 @@
 @use "./abstract/variables";
+@use "./abstract/config";
 @use "layout";
 @use "components";
 
+$-fb: config.$fb-prefix;
+
 *, *:before, *::after {
     box-sizing: border-box;
+}
+
+.#{$-fb}-w-100 {
+    width: 100%;
 }

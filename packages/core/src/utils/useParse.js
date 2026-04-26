@@ -1,3 +1,5 @@
+import { DSL_MATCHERS } from "../dsl/Matchers";
+
 export default function useParse() {
 
   /**
@@ -239,9 +241,9 @@ export default function useParse() {
    * Transforma uma string formatada (DSL) em um objeto de configuração de input.
    * Suporta definição de tipo e responsividade via shorthands.
    * * @example
-   * 'Senha::password:12:md4' => { label: 'Senha', othersProps: { type: 'password' }, colProps: { cols: '12', md: '4' } }
+   * 'Senha::password:12:md4' => { label: 'Senha', iProps: { type: 'password' }, colProps: { cols: '12', md: '4' } }
    * * @param {string} inputString - A string vinda do array de forms (ex: 'Nome::md6').
-   * @returns {Object} Objeto formatado com label, othersProps e colProps.
+   * @returns {Object} Objeto formatado com label, iProps e colProps.
    */
   const parseStringShorthand = (inputString) => {
     // 1. Separa o Label do restante da configuração
@@ -253,25 +255,56 @@ export default function useParse() {
       const parts = configSegments[0].split(':')
       
       parts.forEach(part => {
-        // Regex para identificar breakpoints (sm, md, lg, xl) seguidos de números
-        const breakpointMatch = part.match(/^(sm|md|lg|xl)(\d+)$/)
-        // Verifica se é apenas um número puro (referente ao 'cols' base)
-        const isBaseCol = /^\d+$/.test(part)
+        let matched = false;
 
-        if (breakpointMatch) {
-          const [_, bp, val] = breakpointMatch
-          result.colProps = { ...result.colProps, [bp]: val }
-        } else if (isBaseCol) {
-          result.colProps = { ...result.colProps, cols: part }
-        } else if (part) {
-          // Se não for número nem breakpoint, tratamos como o 'type' do input
-          result.othersProps = { ...result.othersProps, type: part }
+        for (const matcher of DSL_MATCHERS) {
+          const matchResult = matcher.test(part);
+          
+          if (matchResult) {
+            matcher.apply(result, matchResult);
+            matched = true;
+            break; // Para no primeiro que encontrar
+          }
+        }
+
+        // Caso padrão: Se nada capturou e não é vazio, assume que é uma prop booleana true
+        // Ex: "Nome::text:disabled"
+        if (!matched) {
+          result.iProps = { ...result.iProps, [part]: true }
         }
       })
     }
 
     return result
   }
+
+  /**
+   * Converte uma string com sufixo de tipo para seu valor primitivo correspondente.
+   * Suporta: |s (string), |b (boolean), |n (number), |g (bigint), |y (symbol), |u (undefined), |N (null).
+   * * @param {string} value - O valor vindo da DSL (ex: "true|b", "100|n").
+   * @returns {any} O valor convertido para o tipo primitivo.
+   */
+  const castPrimitive = (value) => {
+    // Se não for string ou não tiver o pipe, retorna o valor original
+    if (typeof value !== 'string' || !value.includes('|')) {
+      return value;
+    }
+
+    const [raw, type] = value.split('|');
+
+    const typeMap = {
+      's': (v) => String(v),
+      'b': (v) => v.toLowerCase() === 'true',
+      'n': (v) => Number(v),
+      'g': (v) => BigInt(v),
+      'y': (v) => Symbol(v),
+      'u': () => undefined,
+      'N': () => null,
+    };
+
+    // Se o tipo existir no mapa, executa a conversão, senão retorna o raw
+    return typeMap[type] ? typeMap[type](raw) : value;
+  };
 
   return {
     parseToEditData,
@@ -282,5 +315,6 @@ export default function useParse() {
     parseToDatabaseComplex,
     parseToEditDataComplex,
     parseStringShorthand,
+    castPrimitive,
   }
 }

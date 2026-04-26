@@ -34,7 +34,6 @@ export default function useFileGeneratorForms() {
         ...props[index][indexForm],
       }))
     })
-    console.log('groupBase', groupBase)
 
     return groupBase
   }
