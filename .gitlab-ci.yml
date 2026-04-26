@@ -1,12 +1,10 @@
-# Define que vamos usar a imagem do Node
 image: node:latest
 
-# Estágios do nosso pipeline
 stages:
   - build
   - publish
 
-# 1. Passo de Build: Garante que tudo compila antes de tentar publicar
+# Faz o build de todos os pacotes do monorepo
 build_all:
   stage: build
   script:
@@ -14,17 +12,36 @@ build_all:
     - npm run build
   artifacts:
     paths:
-      - packages/*/dist/ # Guarda as pastas dist para o próximo passo
+      - packages/*/dist/
 
-# 2. Passo de Publicação: Aqui acontece a mágica do Trusted Publishing
-publish_core:
+# Template base para a publicação via Trusted Publishing
+.publish_template:
   stage: publish
   id_token:
     NPM_TOKEN:
-      aud: https://www.npmjs.com # O GitLab prova pro NPM quem ele é
+      aud: https://www.npmjs.com
   script:
     - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
-    - cd packages/core
+    - cd packages/${PACKAGE_DIR}
     - npm publish --provenance --access public
-  only:
-    - tags # O robô só publica se você criar uma "Tag" (ex: v1.0.1)
+  rules:
+    - if: $CI_COMMIT_TAG # Só roda quando você cria uma tag (ex: v1.0.0)
+
+# Publica o Core
+publish_core:
+  extends: .publish_template
+  variables:
+    PACKAGE_DIR: "core"
+
+# Publica o Styles
+publish_styles:
+  extends: .publish_template
+  variables:
+    PACKAGE_DIR: "styles"
+
+# Publica o Vue
+publish_vue:
+  extends: .publish_template
+  variables:
+    PACKAGE_DIR: "vue"
+  needs: ["publish_core", "publish_styles"] # Garante a ordem correta
