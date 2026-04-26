@@ -1,7 +1,6 @@
 {
   "name": "@form-blocks/styles",
   "version": "1.0.0",
-  "private": true,
   "type": "module",
   "main": "./dist/style.css",
   "files": [
@@ -15,5 +14,13 @@
   "devDependencies": {
     "sass": "^1.80.0",
     "vite": "^6.0.0"
-  }
+  },
+  "author": {
+    "name": "Matheus Pinheiro"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/Skarlaks71/form-blocks.git"
+  },
+  "license": "MIT"
 }

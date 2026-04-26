@@ -1,5 +1,5 @@
 {
-    "name": "form-blocks-global",
+    "name": "form-blocks-root",
     "private": true,
     "workspaces": [
         "packages/*"
@@ -7,5 +7,13 @@
     "scripts": {
         "build": "npm run build --workspaces",
         "dev": "npm run dev --workspace=@form-blocks/vue"
-    }
+    },
+    "author": {
+        "name": "Matheus Pinheiro"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://gitlab.com/Skarlaks71/form-blocks.git"
+    },
+    "license": "MIT"
 }
