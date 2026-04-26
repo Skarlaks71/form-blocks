@@ -18,14 +18,16 @@ build_all:
 .publish_template:
   stage: publish
   id_token:
-    NPM_TOKEN:
-      aud: https://www.npmjs.com
+    SIGSTORE_ID_TOKEN: # O nome da variável que o NPM vai ler
+      aud: sigstore
   script:
+    # O NPM usa esse token temporário para se autenticar
+    - export NPM_TOKEN=$SIGSTORE_ID_TOKEN
     - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
     - cd packages/${PACKAGE_DIR}
     - npm publish --provenance --access public
   rules:
-    - if: $CI_COMMIT_TAG # Só roda quando você cria uma tag (ex: v1.0.0)
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+.*/ # Garante que só roda em tags de versão
 
 # Publica o Core
 publish_core:
