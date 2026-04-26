@@ -13,7 +13,11 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://gitlab.com/Skarlaks71/form-blocks.git"
+        "url": "git+https://github.com/Skarlaks71/form-blocks.git"
     },
+    "bugs": {
+        "url": "https://github.com/Skarlaks71/form-blocks/issues"
+    },
+    "homepage": "https://github.com/Skarlaks71/form-blocks#readme",
     "license": "MIT"
 }
