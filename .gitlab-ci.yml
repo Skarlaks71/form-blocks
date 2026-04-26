@@ -2,7 +2,6 @@ image: node:latest
 
 stages:
   - build
-  - publish
 
 # Faz o build de todos os pacotes do monorepo
 build_all:
@@ -13,37 +12,6 @@ build_all:
   artifacts:
     paths:
       - packages/*/dist/
-
-# Template base para a publicação via Trusted Publishing
-.publish_template:
-  stage: publish
-  id_token:
-    SIGSTORE_ID_TOKEN: # O nome da variável que o NPM vai ler
-      aud: sigstore
-  script:
-    # O NPM usa esse token temporário para se autenticar
-    - export NPM_TOKEN=$SIGSTORE_ID_TOKEN
-    - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
-    - cd packages/${PACKAGE_DIR}
-    - npm publish --provenance --access public
   rules:
-    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+.*/ # Garante que só roda em tags de versão
-
-# Publica o Core
-publish_core:
-  extends: .publish_template
-  variables:
-    PACKAGE_DIR: "core"
-
-# Publica o Styles
-publish_styles:
-  extends: .publish_template
-  variables:
-    PACKAGE_DIR: "styles"
-
-# Publica o Vue
-publish_vue:
-  extends: .publish_template
-  variables:
-    PACKAGE_DIR: "vue"
-  needs: ["publish_core", "publish_styles"] # Garante a ordem correta
+    - if: $CI_COMMIT_BRANCH
+    - if: $CI_COMMIT_TAG

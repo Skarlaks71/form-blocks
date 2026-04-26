@@ -1,0 +1,39 @@
+name: Publish Packages
+
+on:
+  push:
+    tags:
+      - 'v*' # dispara em tags tipo v1.0.0
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write   # necessário pro Trusted Publishing
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+
+      - name: Install deps
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish Core
+        run: cd packages/core && npm publish --provenance --access public
+
+      - name: Publish Styles
+        run: cd packages/styles && npm publish --provenance --access public
+
+      - name: Publish Vue
+        run: cd packages/vue && npm publish --provenance --access public
