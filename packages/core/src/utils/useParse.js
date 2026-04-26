@@ -1,4 +1,4 @@
-import { DSL_MATCHERS } from "../dsl/Matchers";
+import { DSL_MATCHERS } from "../dsl/matchers";
 
 export default function useParse() {
 
