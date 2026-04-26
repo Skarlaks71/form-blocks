@@ -1,0 +1,30 @@
+# Define que vamos usar a imagem do Node
+image: node:latest
+
+# Estágios do nosso pipeline
+stages:
+  - build
+  - publish
+
+# 1. Passo de Build: Garante que tudo compila antes de tentar publicar
+build_all:
+  stage: build
+  script:
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - packages/*/dist/ # Guarda as pastas dist para o próximo passo
+
+# 2. Passo de Publicação: Aqui acontece a mágica do Trusted Publishing
+publish_core:
+  stage: publish
+  id_token:
+    NPM_TOKEN:
+      aud: https://www.npmjs.com # O GitLab prova pro NPM quem ele é
+  script:
+    - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
+    - cd packages/core
+    - npm publish --provenance --access public
+  only:
+    - tags # O robô só publica se você criar uma "Tag" (ex: v1.0.1)
