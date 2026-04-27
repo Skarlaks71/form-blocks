@@ -3,37 +3,49 @@ name: Publish Packages
 on:
   push:
     tags:
-      - 'v*' # dispara em tags tipo v1.0.0
+      - 'v*' # Dispara o robô sempre que você criar uma tag que comece com "v" (ex: v1.0.0)
 
 jobs:
   publish:
     runs-on: ubuntu-latest
 
-    permissions:
-      id-token: write   # necessário pro Trusted Publishing
-      contents: read
-
     steps:
+      # 1. Baixa o código do seu repositório para a máquina do GitHub
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 2. Instala o Node.js
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org
 
-      - name: Install deps
+      # 3. Instala todas as dependências do projeto
+      - name: Install dependencies
         run: npm install
 
-      - name: Build
+      # 4. Roda o Build de todos os pacotes (Core, Styles e Vue)
+      - name: Build project
         run: npm run build
 
-      - name: Publish Core
-        run: cd packages/core && npm publish --provenance --access public
-
-      - name: Publish Styles
-        run: cd packages/styles && npm publish --provenance --access public
-
-      - name: Publish Vue
-        run: cd packages/vue && npm publish --provenance --access public
+      # 5. Publicação no NPM usando o seu Token (Secret)
+      - name: Publish to NPM
+        run: |
+          # Cria o arquivo de configuração de autenticação do NPM temporariamente
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+          
+          # Publica o Core primeiro (base de tudo)
+          cd packages/core
+          npm publish --access public
+          
+          # Volta e publica o Styles
+          cd ../styles
+          npm publish --access public
+          
+          # Volta e publica o Vue (que depende dos outros dois)
+          cd ../vue
+          npm publish --access public
+        env:
+          # Garante que o Node consiga ler o token durante o processo
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
