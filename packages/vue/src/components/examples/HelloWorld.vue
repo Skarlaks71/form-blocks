@@ -5,7 +5,7 @@ import heroImg from '../../assets/hero.png'
 import vueLogo from '../../assets/vue.svg'
 import useOrganForms from '../../composables/forms/useOrganForms'
 import useTestForm from '../../composables/useTestForm'
-import { useFormHandle } from '../../composables/useFormHandle'
+import { useFormHandle } from '@form-blocks/core'
 import FbButton from '../FbButton'
 
 const props = defineProps({

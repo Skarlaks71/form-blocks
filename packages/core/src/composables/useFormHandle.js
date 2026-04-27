@@ -1,4 +1,5 @@
-import { useCore, useParse } from "@form-blocks/core"
+import useParse from "../utils/useParse"
+import { useCore } from "./useCore"
 
 export const useFormHandle = () => {
   const { parseLimitProps, parseStringShorthand } = useParse()

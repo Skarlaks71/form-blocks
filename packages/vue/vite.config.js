@@ -19,6 +19,7 @@ export default defineConfig(({ command }) => {
       rollupOptions: {
         external: isBuild ? ['vue'] : [],
         output: {
+          exports: 'named',
           globals: {
             vue: 'Vue',
           },
