@@ -1,6 +1,6 @@
 {
   "name": "@form-blocks/vue",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "type": "module",
   "main": "./dist/form-blocks.umd.cjs",
   "module": "./dist/form-blocks.es.js",
@@ -11,6 +11,9 @@
     ".": {
       "import": "./dist/form-blocks.es.js",
       "require": "./dist/form-blocks.umd.js"
+    },
+    "./styles": {
+      "import": "./dist/styles.js"
     }
   },
   "peerDependencies": {
