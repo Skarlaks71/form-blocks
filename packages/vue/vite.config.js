@@ -10,6 +10,13 @@ export default defineConfig(({ command }) => {
     plugins: [
       vue(),
     ],
+    resolve: {
+      alias: {
+        '@form-blocks/core': path.resolve(__dirname, '../core/src'),
+        '@form-blocks/styles': path.resolve(__dirname, '../styles/scss/main.scss'),
+      },
+      preserveSymlinks: true,
+    },
     build: {
       lib: {
         entry: {

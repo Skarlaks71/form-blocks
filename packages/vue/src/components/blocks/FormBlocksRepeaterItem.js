@@ -13,7 +13,6 @@ import FbInputBlock from '../forms/FbInputBlock'
 import FbInput from '../forms/FbInput'
 import VSelect from 'vue-select'
 import flatPickr from 'vue-flatpickr-component';
-import 'flatpickr/dist/flatpickr.css';
 import { createInputNode } from '../../composables/formRenderer'
 import { getRegistry } from '../../composables/componentRegistry'
 

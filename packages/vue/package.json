@@ -25,8 +25,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@form-blocks/core": "^1.0.0-alpha.2",
-    "@form-blocks/styles": "^1.0.0-alpha.1",
+    "@form-blocks/core": "^1.0.0-alpha.3",
+    "@form-blocks/styles": "^1.0.0-alpha.2",
     "flatpickr": "^4.6.13",
     "maska": "^3.2.0",
     "oh-vue-icons": "^1.0.0-rc3",
