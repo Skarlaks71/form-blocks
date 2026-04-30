@@ -19,12 +19,10 @@ export default defineConfig(({ command }) => {
     },
     build: {
       lib: {
-        entry: {
-          index: path.resolve(__dirname, 'src/index.js'),
-          styles: path.resolve(__dirname, 'src/styles.js'),
-        },
+        entry: path.resolve(__dirname, 'src/index.js'),
         name: 'FormBlocks',
-        fileName: (format, entryName) => `${entryName}.${format}.js`
+        formats: ['es', 'umd'],
+        fileName: (format) => `form-blocks.${format}.js`
       },
       rollupOptions: {
         external: isBuild ? ['vue'] : [],

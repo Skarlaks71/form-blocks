@@ -45,8 +45,7 @@ export default () => {
       groupModel: 'contacts',
       groupFormData: { type: null, value: '' },
       repeaterProps: {
-        btnAddVariant: 'outline-success',
-        dileted: true,
+        btnAddVariant: 'success',
       },
       forms: [
         ['Tipo::select:md12:lg3:filterable', administrationTypeOptions],
