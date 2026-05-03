@@ -310,8 +310,8 @@ export default () => {
     {
       noTitle: true,
       forms: [
-        ['Termos e Condições::checkbox:name=terms', [{ value: true }]],
-        ['Politica de Privacidade::checkbox:name=policy', [{ value: true }]],
+        'Termos e Condições::checkbox:name=terms',
+        'Politica de Privacidade::checkbox:name=policy',
       ],
     },
   ]
