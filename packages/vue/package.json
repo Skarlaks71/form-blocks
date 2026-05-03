@@ -1,6 +1,6 @@
 {
   "name": "@form-blocks/vue",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.0-alpha.6",
   "type": "module",
   "main": "./dist/form-blocks.umd.js",
   "module": "./dist/form-blocks.es.js",
@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@form-blocks/core": "^1.0.0-alpha.4",
-    "@form-blocks/styles": "^1.0.0-alpha.3",
+    "@form-blocks/styles": "^1.0.0-alpha.4",
     "flatpickr": "^4.6.13",
     "maska": "^3.2.0",
     "oh-vue-icons": "^1.0.0-rc3",

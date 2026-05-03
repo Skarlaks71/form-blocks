@@ -21,23 +21,24 @@ export default () => {
         ['Tipo do Órgão::select:md12:lg4:filterable', administrationTypeOptions],
         'Flatpickr::date',
         // ['Radio::radio:name=things:inline:button=true|b', radioOptions],
+        ['Checkbox::checkbox:name=things:multiple', radioOptions],
         // ['Checkbox::checkbox:name=thingsC', radioOptions],
-        {
-          label: 'Checkbox',
-          component: 'checkbox',
-          iProps: {
-            name: 'things',
-            multiple: true,
-            options: [
-              { label: 'carro', value: 'car' },
-              { label: 'Gato', value: 'cat' },
-              { label: 'baleia', value: 'whale' },
-            ],
-            // inline: true,
-            // button: true,
-            // switch: true,
-          },
-        },
+        // {
+        //   label: 'Checkbox',
+        //   component: 'checkbox',
+        //   iProps: {
+        //     name: 'things',
+        //     multiple: true,
+        //     options: [
+        //       { label: 'carro', value: 'car' },
+        //       { label: 'Gato', value: 'cat' },
+        //       { label: 'baleia', value: 'whale' },
+        //     ],
+        //     // inline: true,
+        //     // button: true,
+        //     // switch: true,
+        //   },
+        // },
         // checkbox simple
         {
           label: 'Checkbox',
