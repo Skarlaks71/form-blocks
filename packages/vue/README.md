@@ -242,7 +242,6 @@ export default () => {
           component: 'checkbox',
           iProps: {
             name: 'terms',
-            options: [{ value: true }],
           }
         },
         {
@@ -250,7 +249,6 @@ export default () => {
           component: 'checkbox',
           iProps: {
             name: 'policy',
-            options: [{ value: true }],
           }
         }
       ],
@@ -263,7 +261,7 @@ export default () => {
 }
 ```
 
-![Imagem do resultado esperado](https://gitlab.com/-/project/81216579/uploads/67a99158d9c430ab50a7c8294b0df7bc/image.png)
+![Imagem do resultado esperado](https://gitlab.com/-/project/81216579/uploads/223ff1028c355088f08577a5d2e9a764/image.png)
 
 ## Designed Shorthand Language
 
