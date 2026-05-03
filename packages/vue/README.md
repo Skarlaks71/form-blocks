@@ -1,35 +1,35 @@
 # Form Blocks
 
-> 🚧 Alpha version — APIs may change
+> 🚧 Versão Alpha — a API pode sofrer alterações
 
-Form Blocks is a modular framework for building dynamic and customizable forms using a block-based architecture.
+Form Blocks é um framework modular para construção de formulários dinâmicos e altamente customizáveis, utilizando uma arquitetura baseada em blocos.
 
-It is designed to separate **form logic**, **UI**, and **framework integration**, making it easy to scale across different environments like Vue, React, and Angular.
-
----
-
-## ✨ Features
-
-- 🧩 Block-based form architecture
-- ⚙️ Framework-agnostic core (`@form-blocks/core`)
-- 🎨 Centralized styling system (`@form-blocks/styles`)
-- 🔌 Framework adapters (currently Vue)
-- 🔁 Reusable and dynamic form structures
-- 📦 Monorepo-ready
+Ele foi projetado para separar **lógica de formulário**, **interface (UI)** e **integração com frameworks**, facilitando a escalabilidade entre diferentes ambientes como Vue, React e Angular.
 
 ---
 
-## 📦 Packages
+## ✨ Funcionalidades
 
-| Package | Description |
-|--------|------------|
-| `@form-blocks/core` | Core logic (framework agnostic) |
-| `@form-blocks/styles` | Global styles and design system |
-| `@form-blocks/vue` | Vue 3 components and integration |
+- 🧩 Arquitetura de formulários baseada em blocos
+- ⚙️ Core independente de framework (`@form-blocks/core`)
+- 🎨 Sistema de estilos centralizado (`@form-blocks/styles`)
+- 🔌 Adaptadores para frameworks (atualmente Vue)
+- 🔁 Estruturas de formulários reutilizáveis e dinâmicas
+- 📦 Pronto para uso em monorepos
 
 ---
 
-## 🚀 Installation
+## 📦 Pacotes
+
+| Pacote | Descrição |
+|--------|----------|
+| `@form-blocks/core` | Lógica principal (independente de framework) |
+| `@form-blocks/styles` | Estilos globais e design system |
+| `@form-blocks/vue` | Componentes e integração com Vue 3 |
+
+---
+
+## 🚀 Instalação
 
 ```bash
 npm install @form-blocks/vue
@@ -40,7 +40,7 @@ npm install @form-blocks/vue
 import '@form-blocks/vue/style.css'
 ```
 
-## 🔌 Usage (Vue 3)
+## 🔌 Uso (Vue 3)
 ```javascript
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -55,7 +55,7 @@ app.use(FormBlocks)
 app.mount('#app')
 ```
 
-## 🧱 Basic Example
+## 🧱 Exemplo simples
 
 ```vue
 // HelloWorld.vue
@@ -97,7 +97,7 @@ const groups = makeGroups(props.backVars, groupBase, [3])
 </template>
 ```
 
-useTestForm.js
+#### useTestForm.js
 ```javascript
 export default () => {
   const groupBase = [
@@ -121,3 +121,251 @@ export default () => {
   }
 }
 ```
+
+![Imagem do resultado esperado](https://gitlab.com/-/project/81216579/uploads/74f8a83784dadf1bb3c56f69c310a372/WhatsApp_Image_2026-04-30_at_11.14.53.jpeg)
+
+## 🧱 Exemplo Avançado
+
+```vue
+// HelloWorld.vue
+<script setup>
+import { ref } from 'vue'
+import { useFormHandle } from '@form-blocks/core'
+import useTestForm from '../composables/useTestForm'
+
+const props = defineProps({
+  // as variaveis do model que geram inputs no front
+  backVars: {
+    type: Array,
+    default: () => [
+      'full_name',
+      'email',
+      'gender',
+      'accepted_terms',
+      'privacy_policy',
+      ['Contacts', Array,
+        'type',
+        'value',
+      ]
+    ],
+  },
+})
+
+const formData = ref({})
+const errors = ref({})
+
+const { groupBase } = useTestForm()
+const { makeGroups } = useFormHandle()
+const groups = makeGroups(props.backVars, groupBase, [3, [5, 6], [3, 5]])
+</script>
+
+<template>
+  <div>
+    <form>
+      <form-blocks
+        v-model="formData"
+        :groups="groups"
+        :errors="errors"
+      />
+    </form>
+  </div>
+</template>
+```
+
+#### useTestForm.js
+```javascript
+export default () => {
+  const genderOptions = [
+    { label: 'Masculino', value: 'm' },
+    { label: 'Feminino', value: 'f' },
+    { label: 'Outro', value: 'o' },
+  ]
+
+  const typeOptions = [
+    { label: 'Telefone', value: 'phone' },
+    { label: 'E-mail', value: 'email' },
+    { label: 'Fax', value: 'fax' },
+  ]
+
+  const groupBase = [
+    {
+      title: 'Meu Formulário',
+      forms: [
+        { label: 'Nome Completo' },
+        {
+          label: 'E-mail',
+          iProps: {
+            type: 'email',
+          },
+        },
+        {
+          label: 'Gênero',
+          component: 'radio',
+          colProps: { md: 4 },
+          iProps: {
+            name: 'gender',
+            options: genderOptions,
+            inline: true,
+          },
+        }
+      ]
+    },
+    {
+      title: 'Contatos',
+      isRepeater: true,
+      groupModel: 'contacts',
+      groupFormData: { type: null, value: '' },
+      repeaterProps: {
+        btnAddVariant: 'outline-success',
+      },
+      forms: [
+        {
+          label: 'Tipo',
+          component: 'select',
+          colProps: { md: 4 },
+          iProps: {
+            options: typeOptions,
+            reduce: val => val.value,
+          }
+        },
+        {
+          label: 'Valor',
+          colProps: { md: 8 },
+        },
+      ],
+    },
+    {
+      noTitle: true,
+      forms: [
+        {
+          label: 'Termos e Condições',
+          component: 'checkbox',
+          iProps: {
+            name: 'terms',
+            options: [{ value: true }],
+          }
+        },
+        {
+          label: 'Politica de Privacidade',
+          component: 'checkbox',
+          iProps: {
+            name: 'policy',
+            options: [{ value: true }],
+          }
+        }
+      ],
+    },
+  ]
+
+  return {
+    groupBase,
+  }
+}
+```
+
+![Imagem do resultado esperado](https://gitlab.com/-/project/81216579/uploads/67a99158d9c430ab50a7c8294b0df7bc/image.png)
+
+## Designed Shorthand Language
+
+Calma pessoal não fujam para as colinas ainda! 🏃‍♂️⛰️<br>
+Se vocês assim como eu acham esse objeto gigante e tem preguiça de escrever algo desse tamanho para um formulário **(mesmo os complexos)**. Seus problemas acabaram, apresento a vocês a nossa dsl ou escrita curta, vou mostrar como criar o mesmo objeto mas escrevendo bem menos.
+
+```javascript
+// useTestForm.js with dsl
+export default () => {
+  const genderOptions = [
+    { label: 'Masculino', value: 'm' },
+    { label: 'Feminino', value: 'f' },
+    { label: 'Outro', value: 'o' },
+  ]
+
+  const typeOptions = [
+    { label: 'Telefone', value: 'phone' },
+    { label: 'E-mail', value: 'email' },
+    { label: 'Fax', value: 'fax' },
+  ]
+
+  const groupBase = [
+    {
+      title: 'Meu Formulário',
+      forms: [
+        'Nome Completo',
+        'E-mail::email'
+        ['Gênero::radio:md4:name=gender:inline', genderOptions],
+      ]
+    },
+    {
+      title: 'Contatos',
+      isRepeater: true,
+      groupModel: 'contacts',
+      groupFormData: { type: null, value: '' },
+      repeaterProps: {
+        btnAddVariant: 'outline-success',
+      },
+      forms: [
+        ['Tipo::select:md4', typeOptions],
+        'Valor::md8',
+      ],
+    },
+    {
+      noTitle: true,
+      forms: [
+        ['Termos e Condições::checkbox:name=terms', [{ value: true }]],
+        ['Politica de Privacidade::checkbox:name=policy', [{ value: true }]],
+      ],
+    },
+  ]
+
+  return {
+    groupBase,
+  }
+}
+```
+
+## 🧠 Arquitetura
+O Form Blocks está dividido em três camadas principais:
+
+**Core**(``@form-blocks/core``)
+- Form logic
+- Validation handling
+- State management
+- No UI / no framework
+
+**Styles**(``@form-blocks/styles``)
+- Design tokens
+- Layout system
+- Utility classes
+
+**Plugin Module**(``@form-blocks/vue``)
+- UI components
+- Vue bindings
+- Integration with external libraries
+
+## 📁 Estrutura do Projeto
+```bash
+packages/
+  core/
+  styles/
+  vue/
+```
+
+## ⚠️ Alpha Status
+Este projeto está atualmente em alpha.
+
+Coisas que podem mudar:
+
+- API structure
+- Component names
+- Schema format
+- Styling system
+
+## 🛠 Roadmap
+- **Modulo React**
+- **Modulo Angular**
+- **Adição da internacionalização (I18n)**
+- **DSL para o groupBase**
+- **Site com a documentação**
+
+## 🤝 Contributing
+
+Contribuições, ideias e feedbacks são bem vindas.
