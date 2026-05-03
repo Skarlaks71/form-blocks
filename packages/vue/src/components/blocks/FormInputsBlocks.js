@@ -35,7 +35,11 @@ export default {
       if (input.dependent?.value === false) return null
 
       const registryItem = registry[input.component] || {}
-      const supportsLabelFor = registryItem.supportsLabelFor ?? true
+      let supportsLabelFor = registryItem.supportsLabelFor ?? true
+
+      if (input.component === 'checkbox' && !input.iProps.hasOwnProperty('multiple')) {
+        supportsLabelFor = true
+      }
 
       return h(Transition, { name: 'fade' }, {
         default: () => h(FbCol, { cols: 12, ...input.colProps }, {

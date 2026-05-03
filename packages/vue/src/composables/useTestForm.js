@@ -20,23 +20,37 @@ export default () => {
         'Age::search:md2',
         ['Tipo do Órgão::select:md12:lg4:filterable', administrationTypeOptions],
         'Flatpickr::date',
-        ['Radio::radio:name=things:inline:button=true|b', radioOptions],
-        ['Checkbox::checkbox:name=thingsC', radioOptions],
-        // {
-        //   label: 'Checkbox',
-        //   component: 'checkbox',
-        //   iProps: {
-        //     name: 'thingsC',
-        //     options: [
-        //       { label: 'carro', value: 'car' },
-        //       { label: 'Gato', value: 'cat' },
-        //       { label: 'baleia', value: 'whale' },
-        //     ],
-        //     // inline: true,
-        //     // button: true,
-        //     // switch: true,
-        //   },
-        // },
+        // ['Radio::radio:name=things:inline:button=true|b', radioOptions],
+        // ['Checkbox::checkbox:name=thingsC', radioOptions],
+        {
+          label: 'Checkbox',
+          component: 'checkbox',
+          iProps: {
+            name: 'things',
+            multiple: true,
+            options: [
+              { label: 'carro', value: 'car' },
+              { label: 'Gato', value: 'cat' },
+              { label: 'baleia', value: 'whale' },
+            ],
+            // inline: true,
+            // button: true,
+            // switch: true,
+          },
+        },
+        // checkbox simple
+        {
+          label: 'Checkbox',
+          component: 'checkbox',
+          iProps: {
+            name: 'thingsC',
+            value: 'car',
+            unvalue: 2,
+            // inline: true,
+            button: true,
+            // switch: true,
+          },
+        },
       ]
     },
     {

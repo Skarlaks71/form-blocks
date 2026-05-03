@@ -24,6 +24,8 @@ $fb: config.$fb-prefix;
     --#{$fb}-input-border-color: #{config.$fb-border-color};
     --#{$fb}-input-border-color-focus: #{color.adjust(map.get(config.$fb-colors, 'primary'), $lightness: 25%)};
     --#{$fb}-input-border-radius: #{config.$fb-border-radius};
+    --#{$fb}-input-bg-checkbox: #000;
+    --#{$fb}-input-bg-switch: #000;
     
     --fb-texture-opacity: 0.3;
 

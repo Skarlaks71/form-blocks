@@ -1,11 +1,15 @@
-import { h, computed } from 'vue'
+import { h, computed, onMounted } from 'vue'
 import { PREFIX } from '@form-blocks/core/constants'
 
 export default {
   name: 'FbCheckbox',
   props: {
-    modelValue: { type: [Array, Boolean, String, Number], default: () => [] },
+    id: { type: String, default: undefined },
+    modelValue: { type: [Boolean, Array, String, Number], default: undefined },
+    multiple: { type: Boolean, default: false },
     options: { type: Array, default: () => [] }, // [{ label: 'Aceito', value: 'yes' }]
+    value: { type: [Boolean, String, Number, Function], default: true },
+    unvalue: { type: [Boolean, String, Number, Function], default: false },
     name: { type: String, required: true },
     state: { type: Boolean, default: null },
     inline: { type: Boolean, default: false },
@@ -16,31 +20,32 @@ export default {
   emits: ['update:modelValue', 'change'],
 
   setup(props, { emit }) {
+    if (props.modelValue === undefined) {
+      const defaultValue = props.multiple ? [] : props.unvalue;
+      emit('update:modelValue', defaultValue);
+    }
+
     const isChecked = (value) => {
-      if (Array.isArray(props.modelValue)) {
-        return props.modelValue.includes(value)
+      if(!props.modelValue || value === undefined) return false
+
+      if (props.multiple) {
+        return Array.isArray(props.modelValue) && props.modelValue.includes(value)
       }
 
-      // Se for booleano e true, e o valor da opção for algo como 'true' ou 1
-      if (typeof props.modelValue === 'boolean') {
-        return props.modelValue === true && value === true
-      }
-
-      return false
+      // Se não for multiple
+      return props.modelValue === value
     }
 
     const onChange = (value) => {
       let newValue
-      if (Array.isArray(props.modelValue)) {
+      if (props.multiple) {
         newValue = [...props.modelValue]
         const index = newValue.indexOf(value)
         if (index > -1) newValue.splice(index, 1)
         else newValue.push(value)
-      } else if (typeof props.modelValue === 'boolean') {
-        newValue = !props.modelValue
       } else {
-        // Toggle para valor booleano ou único
-        newValue = [value]
+        if (props.modelValue === value) newValue = props.unvalue
+        else newValue = value
       }
       emit('update:modelValue', newValue)
       emit('change', newValue)
@@ -66,30 +71,56 @@ export default {
       }
     ]
 
-    return () => h('div', { class: containerClasses.value }, 
-      props.options.map((option, index) => {
-        const id = `${props.name}-${index}`
-        const active = isChecked(option.value)
+    const checkboxRender = () => {
+      if (props.multiple) {
+        return () => h('div', { class: containerClasses.value },
+          props.options.map((option, index) => {
+            const id = `${props.name}-${index}`
+            const active = isChecked(option.value)
 
-        return h('div', { class: `${PREFIX}-checkbox`, key: index }, [
+            return h('div', { class: `${PREFIX}-checkbox`, key: index }, [
+              h('input', {
+                type: 'checkbox',
+                id,
+                name: props.name,
+                value: option.value,
+                checked: active,
+                disabled: option.disabled,
+                class: `${PREFIX}-checkbox__input`,
+                onChange: () => onChange(option.value)
+              }),
+              h('label', {
+                class: [
+                  ...getOptionClasses(option),
+                  ((index === 0 && props.button) ? `${PREFIX}-checkbox__label--button--is-first`: ''),
+                  ((index === props.options.length - 1 && props.button) ? `${PREFIX}-checkbox__label--button--is-last`: ''),
+                ], for: id }, option.label)
+            ])
+          })
+        )
+      } else {
+        const id = props.id || `${props.name}`
+
+        return () => h('div', { class: `${PREFIX}-checkbox ${PREFIX}-checkbox--is-simple` }, [
           h('input', {
             type: 'checkbox',
             id,
             name: props.name,
-            value: option.value,
-            checked: active,
-            disabled: option.disabled,
+            value: props.value,
+            checked: isChecked(props.value),
+            // disabled: option.disabled,
             class: `${PREFIX}-checkbox__input`,
-            onChange: () => onChange(option.value)
+            onChange: () => onChange(props.value)
           }),
-          h('label', {
+          h('span', {
             class: [
-              ...getOptionClasses(option),
-              ((index === 0 && props.button) ? `${PREFIX}-checkbox__label--button--is-first`: ''),
-              ((index === props.options.length - 1 && props.button) ? `${PREFIX}-checkbox__label--button--is-last`: ''),
-            ], for: id }, option.label)
+              ...getOptionClasses(props),
+              ((props.button) ? `${PREFIX}-checkbox__label--button--is-simple`: ''),
+            ], for: id }, '')
         ])
-      })
-    )
+      }
+    }
+
+    return checkboxRender()
   }
 }

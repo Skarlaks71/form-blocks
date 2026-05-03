@@ -20,7 +20,7 @@ export const createInputNode = ({ input, formData, errors, slotProps }) => {
   if (normalizedValue === undefined) {
     switch (componentName) {
       case 'checkbox':
-        normalizedValue = []
+        normalizedValue = undefined
         break
       case 'select':
         normalizedValue = null
