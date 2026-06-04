@@ -205,15 +205,10 @@ export default function useParse() {
   * @param {Array<string | [string, Function, ...string[]]>} stringsArray - Lista de strings a serem convertidas.
   * - O segundo elemento do subarray representa o construtor do tipo (Array, Object, etc).
   * @param {number | [number, number]} limitOrRange - Valor limite ou intervalo de índices.
+  * @param { Function } parse - (Opcional) função parse da backVars to camelCase. Por default backVars está em snake_case
   * @returns {Array<{ model: string, back: string }>} - Array de objetos formatados.
   */
-  const parseLimitProps = (stringsArray, limitOrRange = [0, stringsArray.length]) => {
-    const toCamelCase = (str) => {
-      return str
-        .replace(/[-_ ](.)/g, (_, char) => char.toUpperCase()) // Converte traços, underscores e espaços para camelCase
-        .replace(/^(.)/, (match) => match.toLowerCase()); // Garante que o primeiro caractere seja minúsculo
-    };
-
+  const parseLimitProps = (stringsArray, limitOrRange = [0, stringsArray.length], parse = toCamelCase) => {
     let start = 0, end = stringsArray.length;
 
     // Se for um número, define como limite máximo
@@ -229,9 +224,9 @@ export default function useParse() {
     return stringsArray.slice(start, end).flatMap(item => {
       if (Array.isArray(item) && item.length > 2) {
         const [groupName, _, ...values] = item
-        return values.map(str => ({ model: toCamelCase(str), back: `${groupName}.${str}` }));
+        return values.map(str => ({ model: parse(str), back: `${groupName}.${str}` }));
       } else if (typeof item === "string") {
-        return { model: toCamelCase(item), back: item };
+        return { model: parse(item), back: item };
       }
       return [];
     });
@@ -316,5 +311,6 @@ export default function useParse() {
     parseToEditDataComplex,
     parseStringShorthand,
     castPrimitive,
+    toCamelCase,
   }
 }

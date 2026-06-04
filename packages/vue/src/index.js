@@ -14,6 +14,11 @@ import FbCheckbox from "./components/forms/FbCheckbox"
 import FbRadio from "./components/forms/FbRadio"
 import FbButton from "./components/FbButton"
 import { registerComponent } from "./composables/componentRegistry"
+import { useCore } from '@form-blocks/core'
+import { registry } from "./composables/componentRegistry"
+
+const { registerMultipleComponents } = useCore()
+registerMultipleComponents(registry)
 
 const install = app => {
   app.component('FbContainer', FbContainer)
