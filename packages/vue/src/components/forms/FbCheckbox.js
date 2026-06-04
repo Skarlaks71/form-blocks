@@ -39,7 +39,8 @@ export default {
     const onChange = (value) => {
       let newValue
       if (props.multiple) {
-        newValue = [...props.modelValue]
+        // newValue = [...props.modelValue]
+        newValue = Array.isArray(props.modelValue) ? [...props.modelValue] : []
         const index = newValue.indexOf(value)
         if (index > -1) newValue.splice(index, 1)
         else newValue.push(value)
