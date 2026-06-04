@@ -112,7 +112,7 @@ export default {
       })
 
       // 2. Renderização Final
-      return h('div', { class: `${PREFIX}-repeater ${PREFIX}-container` }, [
+      return h('div', { class: `${PREFIX}-repeater ${PREFIX}-container-fluid` }, [
         h(TransitionGroup, { name: `${PREFIX}-fade`, tag: 'div' }, {
           default: () => renderItems()
         }),

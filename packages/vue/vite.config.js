@@ -10,15 +10,24 @@ export default defineConfig(({ command }) => {
     plugins: [
       vue(),
     ],
+    resolve: {
+      alias: {
+        '@form-blocks/core': path.resolve(__dirname, '../core/src'),
+        '@form-blocks/styles': path.resolve(__dirname, '../styles/scss/main.scss'),
+      },
+      preserveSymlinks: true,
+    },
     build: {
       lib: {
         entry: path.resolve(__dirname, 'src/index.js'),
         name: 'FormBlocks',
-        fileName: format => `form-blocks.${format}.js`
+        formats: ['es', 'umd'],
+        fileName: (format) => `form-blocks.${format}.js`
       },
       rollupOptions: {
         external: isBuild ? ['vue'] : [],
         output: {
+          exports: 'named',
           globals: {
             vue: 'Vue',
           },

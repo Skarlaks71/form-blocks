@@ -13,9 +13,8 @@ import FbInputBlock from '../forms/FbInputBlock'
 import FbInput from '../forms/FbInput'
 import VSelect from 'vue-select'
 import flatPickr from 'vue-flatpickr-component';
-import 'flatpickr/dist/flatpickr.css';
 import { createInputNode } from '../../composables/formRenderer'
-import { getRegistry } from '../../composables/componentRegistry'
+import { useCore } from '@form-blocks/core'
 
 export default {
   name: 'FormBlocksRepeaterItem',
@@ -28,7 +27,7 @@ export default {
   setup(props, { slots }) {
     const errors = inject('errors', {}) // Fallback para objeto vazio
 
-    const registry = getRegistry()
+    const registry = useCore().getRegistry()
 
     return () => {
       const { forms, uid, index } = props

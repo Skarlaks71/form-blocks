@@ -14,9 +14,8 @@ import FbInputBlock from '../forms/FbInputBlock'
 import FbInput from '../forms/FbInput'
 import VSelect from 'vue-select'
 import flatPickr from 'vue-flatpickr-component';
-import 'flatpickr/dist/flatpickr.css';
 import { createInputNode } from '../../composables/formRenderer'
-import { getRegistry } from '../../composables/componentRegistry'
+import { useCore } from '@form-blocks/core'
 
 export default {
   name: 'FormInputsBlocks',
@@ -29,14 +28,18 @@ export default {
     const formData = inject('formData')
     const errors = inject('errors')
 
-    const registry = getRegistry()
+    const registry = useCore().getRegistry()
 
     return () => {
       const { input } = props
       if (input.dependent?.value === false) return null
 
       const registryItem = registry[input.component] || {}
-      const supportsLabelFor = registryItem.supportsLabelFor ?? true
+      let supportsLabelFor = registryItem.supportsLabelFor ?? true
+
+      if (input.component === 'checkbox' && !input.iProps.hasOwnProperty('multiple')) {
+        supportsLabelFor = true
+      }
 
       return h(Transition, { name: 'fade' }, {
         default: () => h(FbCol, { cols: 12, ...input.colProps }, {

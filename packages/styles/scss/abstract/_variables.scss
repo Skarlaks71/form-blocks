@@ -24,8 +24,20 @@ $fb: config.$fb-prefix;
     --#{$fb}-input-border-color: #{config.$fb-border-color};
     --#{$fb}-input-border-color-focus: #{color.adjust(map.get(config.$fb-colors, 'primary'), $lightness: 25%)};
     --#{$fb}-input-border-radius: #{config.$fb-border-radius};
+    --#{$fb}-input-bg-checkbox: #000;
+    --#{$fb}-input-bg-switch: #000;
     
     --fb-texture-opacity: 0.3;
 
     --#{fb}-hr-color: #{config.$fb-hr-color};
+
+    --#{fb}--sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+    --#{fb}--heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+    --#{fb}--mono: ui-monospace, Consolas, monospace;
+
+    font: 18px/145% var(--#{fb}--sans);
+
+    @media (max-width: 1024px) {
+        font-size: 16px;
+    }
 }

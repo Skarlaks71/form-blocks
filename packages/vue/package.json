@@ -1,29 +1,32 @@
 {
   "name": "@form-blocks/vue",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha.6",
   "type": "module",
-  "main": "./dist/form-blocks.umd.cjs",
-  "module": "./dist/form-blocks.js",
+  "main": "./dist/form-blocks.umd.js",
+  "module": "./dist/form-blocks.es.js",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
-      "import": "./dist/form-blocks.js",
+      "import": "./dist/form-blocks.es.js",
       "require": "./dist/form-blocks.umd.js"
-    }
+    },
+    "./style.css": "./dist/style.css"
   },
   "peerDependencies": {
     "vue": "^3.4.0"
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run build:lib && npm run build:styles",
+    "build:lib": "vite build",
+    "build:styles": "vite build --config vite.styles.config.js",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@form-blocks/core": "^1.0.0",
-    "@form-blocks/styles": "^1.0.0",
+    "@form-blocks/core": "^1.0.0-alpha.4",
+    "@form-blocks/styles": "^1.0.0-alpha.4",
     "flatpickr": "^4.6.13",
     "maska": "^3.2.0",
     "oh-vue-icons": "^1.0.0-rc3",
@@ -35,5 +38,17 @@
     "sass-embedded": "^1.99.0",
     "vite": "^8.0.4",
     "vue": "^3.5.32"
-  }
+  },
+  "author": {
+    "name": "Matheus Pinheiro"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Skarlaks71/form-blocks.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Skarlaks71/form-blocks/issues"
+  },
+  "homepage": "https://github.com/Skarlaks71/form-blocks#readme",
+  "license": "MIT"
 }

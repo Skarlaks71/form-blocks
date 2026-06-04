@@ -162,6 +162,115 @@ $fb-border-color: #dee2e6;
             }
         }
     }
+
+    // customização para o checkbox
+    &:has(.#{$fb}-checkbox--is-simple) {
+        
+        flex-direction: row;
+        position: relative;
+
+        .#{$fb}-input-block__label {
+            padding-left: 1.5rem;
+            width: max-content;
+            font-weight: 400;
+            cursor: pointer;
+            position: relative;
+    
+            &::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-40%);
+                width: 1rem;
+                height: 1rem;
+                border: 2px solid #ced4da;
+                border-radius: 4px;
+                transition: all 0.2s ease;
+            }
+        }
+
+        &:has(input:checked + .fb-checkbox__label)  {
+            .#{$fb}-input-block__label::before {
+                content: "";
+                background-color: var(--#{$fb}-color-primary);
+                border-color: var(--#{$fb}-color-primary);
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+            }
+        }
+
+        &:has(input:checked + .fb-checkbox__label--switch)  {
+            .#{$fb}-input-block__label {
+                &::before {
+                    background-color: var(--#{$fb}-color-primary);
+                    border-color: var(--#{$fb}-color-primary);
+                }
+                &::after {
+                    transform: translateX(1rem); // Move a bolinha
+                    background-color: #fff;
+                }
+            }
+        }
+
+        &:has(.#{$fb}-checkbox--is-simple .fb-checkbox__label--switch) {
+            .#{$fb}-input-block__label {
+                cursor: pointer;
+                position: relative;
+                padding-left: 2.5rem;
+                display: inline-block;
+                min-height: 1.25rem;
+                transition: all 0.2s ease-in-out;
+
+                // O "trilho" do switch
+                &::before {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    top: 0.65rem;
+                    width: 2rem;
+                    height: 1rem;
+                    background-color: #dee2e6;
+                    border-radius: 1rem;
+                    transition: background-color 0.2s ease-in-out;
+                }
+
+                // A "bolinha"
+                &::after {
+                    content: "";
+                    position: absolute;
+                    left: 0.125rem;
+                    top: 0.395rem;
+                    width: 0.75rem;
+                    height: 0.75rem;
+                    background-color: #fff;
+                    border-radius: 50%;
+                    transition: transform 0.2s ease-in-out;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+                }
+            }
+        }
+
+        &:has(.#{$fb}-checkbox--is-simple .fb-checkbox__label--button) {
+            .#{$fb}-input-block__label {
+                border-radius: var(--#{$fb}-input-border-radius);
+                @include m.button-variant-base-inline;
+                &::before {
+                    display: none !important;
+                }
+            }
+        }
+
+        &:has(.#{$fb}-checkbox--is-simple .fb-checkbox__label--button--active) {
+            .#{$fb}-input-block__label {
+                background-color: var(--#{$fb}-color-primary);
+                color: #fff;
+                &:hover {
+                    color: var(--#{$fb}-color-primary-hover);
+                    background-color: var(--#{$fb}-color-primary-hover-light);
+                }
+            }
+        }
+    }
 }
 
 // Função auxiliar para trocar o # por %23 no SVG (necessário para Sass)
@@ -376,16 +485,16 @@ $fb-border-color: #dee2e6;
             // Checkbox Custom Padrão
             &:checked + .#{$fb}-checkbox__label::before {
                 content: "";
-                background-color: #000000;
-                border-color: #000000;
+                background-color: var(--#{$fb}-color-primary);
+                border-color: var(--#{$fb}-color-primary);
                 background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
             }
     
             // Lógica do SWITCH
             &:checked ~ .#{$fb}-checkbox__label--switch {
                 &::before {
-                    background-color: #0d6efd;
-                    border-color: #0d6efd;
+                    background-color: var(--#{$fb}-color-primary);
+                    border-color: var(--#{$fb}-color-primary);
                 }
                 &::after {
                     transform: translateX(1rem); // Move a bolinha
@@ -457,6 +566,41 @@ $fb-border-color: #dee2e6;
 
 }
 
+.#{$fb}-checkbox--is-simple.#{$fb}-checkbox {
+    width: max-content;
+    order: -1;
 
+    .#{$fb}-checkbox {
+        &__input {
+            position: absolute;
+            opacity: 0;
+            z-index: -1;
+    
+            // Checkbox Custom Padrão
+            &:checked + .#{$fb}-checkbox__label::before {
+                content: "";
+                background-color: var(--#{$fb}-color-primary);
+                border-color: var(--#{$fb}-color-primary);
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+            }
+    
+            // Lógica do SWITCH
+            &:checked ~ .#{$fb}-checkbox__label--switch {
+                &::before {
+                    background-color: var(--#{$fb}-color-primary);
+                    border-color: var(--#{$fb}-color-primary);
+                }
+                &::after {
+                    transform: translateX(1rem); // Move a bolinha
+                    background-color: #fff;
+                }
+            }
+        }
+    }
+
+    &:has(.fb-checkbox__label--button) {
+        position: absolute;
+    }
+}
 
 

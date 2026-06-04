@@ -1,17 +1,19 @@
 import { h, resolveDirective, withDirectives, resolveDynamicComponent } from 'vue'
-import { getRegistry } from './componentRegistry'
+import { useCore } from '@form-blocks/core'
 import FbInput from '../components/forms/FbInput'
 import { PREFIX } from '@form-blocks/core/constants'
 
 export const createInputNode = ({ input, formData, errors, slotProps }) => {
-  const registry = getRegistry()
+  const registry = useCore().getRegistry()
 
   // 1. Resolver o componente
   const componentName = input.component || 'input'
   const registryItem = registry[componentName]
-  const componentTarget = registryItem.component || resolveDynamicComponent(input.component)
+  const componentTarget = registryItem 
+    ? (registryItem.component || resolveDynamicComponent(componentName))
+    : resolveDynamicComponent(componentName)
 
-  const supportsLabelFor = registryItem.supportsLabelFor ?? true
+  const supportsLabelFor = registryItem ? registryItem.supportsLabelFor ?? true : true
 
   // 2. Normalizar valor (Evitar undefined para Flatpickr/VSelect)
   const currentValue = formData.value[input.model]
@@ -20,7 +22,7 @@ export const createInputNode = ({ input, formData, errors, slotProps }) => {
   if (normalizedValue === undefined) {
     switch (componentName) {
       case 'checkbox':
-        normalizedValue = []
+        normalizedValue = undefined
         break
       case 'select':
         normalizedValue = null

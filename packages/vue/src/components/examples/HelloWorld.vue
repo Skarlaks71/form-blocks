@@ -5,7 +5,7 @@ import heroImg from '../../assets/hero.png'
 import vueLogo from '../../assets/vue.svg'
 import useOrganForms from '../../composables/forms/useOrganForms'
 import useTestForm from '../../composables/useTestForm'
-import { useFormHandle } from '../../composables/useFormHandle'
+import { useFormHandle } from '@form-blocks/core'
 import FbButton from '../FbButton'
 
 const props = defineProps({
@@ -37,7 +37,7 @@ const formErrors = ref({})
 const { groupBase } = useTestForm()
 const { makeGroups } = useFormHandle();
 // const { makeGroups: makeOrganGroups } = useOrganForms();
-const groups = makeGroups(props.backVars, groupBase, [8, [8, 12]])
+const groups = makeGroups(props.backVars, groupBase, [8, [8, 9]])
 // const groupsO = makeOrganGroups(organBackVars.value, {})
 console.log('groups: ', groups)
 

@@ -20,13 +20,15 @@ export default () => {
         'Age::search:md2',
         ['Tipo do Órgão::select:md12:lg4:filterable', administrationTypeOptions],
         'Flatpickr::date',
-        ['Radio::radio:name=things:inline:button=true|b', radioOptions],
-        ['Checkbox::checkbox:name=thingsC', radioOptions],
+        // ['Radio::radio:name=things:inline:button=true|b', radioOptions],
+        ['Checkbox::checkbox:name=things:multiple', radioOptions],
+        // ['Checkbox::checkbox:name=thingsC', radioOptions],
         // {
         //   label: 'Checkbox',
         //   component: 'checkbox',
         //   iProps: {
-        //     name: 'thingsC',
+        //     name: 'things',
+        //     multiple: true,
         //     options: [
         //       { label: 'carro', value: 'car' },
         //       { label: 'Gato', value: 'cat' },
@@ -37,6 +39,19 @@ export default () => {
         //     // switch: true,
         //   },
         // },
+        // checkbox simple
+        {
+          label: 'Checkbox',
+          component: 'checkbox',
+          iProps: {
+            name: 'thingsC',
+            value: 'car',
+            unvalue: 2,
+            // inline: true,
+            button: true,
+            // switch: true,
+          },
+        },
       ]
     },
     {
@@ -45,8 +60,7 @@ export default () => {
       groupModel: 'contacts',
       groupFormData: { type: null, value: '' },
       repeaterProps: {
-        btnAddVariant: 'outline-success',
-        dileted: true,
+        btnAddVariant: 'success',
       },
       forms: [
         ['Tipo::select:md12:lg3:filterable', administrationTypeOptions],
