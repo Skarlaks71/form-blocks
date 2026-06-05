@@ -271,6 +271,36 @@ $fb-border-color: #dee2e6;
             }
         }
     }
+    &__password-wrapper {
+        position: relative;
+
+        .#{$fb}-input-block__control {
+            padding-right: 2.5rem;
+        }
+    }
+
+    &__password-toggle {
+        position: absolute;
+        right: 0.625rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        color: var(--#{$fb}-color-text-info);
+        display: flex;
+        align-items: center;
+        line-height: 1;
+
+        &:hover {
+            color: var(--#{$fb}-color-primary)
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
 }
 
 // Função auxiliar para trocar o # por %23 no SVG (necessário para Sass)
