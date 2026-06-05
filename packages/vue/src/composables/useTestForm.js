@@ -14,7 +14,7 @@ export default () => {
     {
       title: 'Meu Formulário',
       forms: [
-        'Name',
+        'Name::disabled',
         'Login::email:12:md3',
         'Senha::password:6',
         'Age::search:md2',

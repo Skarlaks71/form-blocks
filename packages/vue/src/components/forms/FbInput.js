@@ -1,4 +1,4 @@
-import { h, resolveDirective, withDirectives, computed } from 'vue'
+import { h, resolveDirective, withDirectives, computed, ref, resolveComponent } from 'vue'
 import { PREFIX } from '@form-blocks/core/constants'
 
 export default {
@@ -17,6 +17,7 @@ export default {
   setup(props, { emit, attrs }) {
     const ibControlClass = `${PREFIX}-input-block__control`
 
+    const showPassword = ref(false)
     const vMaska = resolveDirective('maska')
     const vLimitChars = resolveDirective('limit-chars')
 
@@ -46,6 +47,7 @@ export default {
       const inputNode = h('input', {
         // 1. Herda todos os atributos naturais (type, placeholder, id, maxlength, etc.)
         ...attrs,
+        type: attrs.type === 'password' ? (showPassword.value ? 'text' : 'password') : attrs.type,
         id: finalId.value,
         // 2. Classes dinâmicas baseadas no estado
         class: [
@@ -73,7 +75,21 @@ export default {
         directives.push([vLimitChars, props.limit])
       }
 
-      return withDirectives(inputNode, directives)
+      const inputWithDirectives = withDirectives(inputNode, directives)
+
+      if (attrs.type !== 'password') return inputWithDirectives
+
+      const vIcon = resolveComponent('v-icon')
+      const toggleBtn = h('button', {
+        type: 'button',
+        class: `${PREFIX}-input-block__password-toggle`,
+        onClick: () => { showPassword.value = !showPassword.value }
+      }, [h(vIcon, { name: showPassword.value ? 'hi-eye-off' : 'hi-eye', scale: '1' })])
+
+      return h('div', { class: `${PREFIX}-input-block__password-wrapper` }, [
+        inputWithDirectives,
+        toggleBtn
+      ])
     }
   }
 }
