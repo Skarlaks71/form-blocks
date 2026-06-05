@@ -301,6 +301,18 @@ export default function useParse() {
     return typeMap[type] ? typeMap[type](raw) : value;
   };
 
+  const parseYupErrors = (yupError) => {
+    const errors = {}
+    if (yupError.inner && Array.isArray(yupError.inner)) {
+      yupError.inner.forEach(error => {
+        if (error.path && !errors[error.path]) {
+          errors[error.path] = error.message
+        }
+      })
+    }
+    return errors
+  }
+
   return {
     parseToEditData,
     parseToDatabase,
@@ -312,5 +324,6 @@ export default function useParse() {
     parseStringShorthand,
     castPrimitive,
     toCamelCase,
+    parseYupErrors,
   }
 }

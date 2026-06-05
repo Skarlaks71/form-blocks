@@ -24,7 +24,8 @@
         "vite": "^8.0.4"
     },
     "dependencies": {
-        "lodash.clonedeep": "^4.5.0"
+        "lodash.clonedeep": "^4.5.0",
+        "yup": "^1.7.1"
     },
     "author": {
         "name": "Matheus Pinheiro"
