@@ -15,11 +15,15 @@ import FbRadio from "./components/forms/FbRadio"
 import FbButton from "./components/FbButton"
 import { useCore } from '@form-blocks/core'
 import { registry } from "./composables/componentRegistry"
+import { OhVueIcon, addIcons } from "oh-vue-icons"
+import { HiEye, HiEyeOff } from "oh-vue-icons/icons/hi"
 
 const { registerMultipleComponents } = useCore()
 registerMultipleComponents(registry)
 
 const install = app => {
+  addIcons(HiEye, HiEyeOff)
+  app.component("v-icon", OhVueIcon)
   app.component('FbContainer', FbContainer)
   app.component('FbRow', FbRow)
   app.component('FbCol', FbCol)
