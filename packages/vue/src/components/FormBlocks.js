@@ -11,6 +11,7 @@ import { PREFIX } from '@form-blocks/core/constants'
 import FbRow from './grid/FbRow'
 import FbCol from './grid/FbCol'
 import FbButton from './FbButton'
+import { useParse } from '@form-blocks/core'
 
 export default {
   name: 'FormBlocks',
@@ -38,8 +39,9 @@ export default {
 
       // Varre cada grupo declarado no groupBase
       for (const group of props.groups) {
+        console.log(group)
         // Se o grupo não tiver a propriedade rules definida, pula para o próximo
-        if (!group.rules || typeof group.rules.validate !== 'function') {
+        if (!group.rules || Object.keys(group.rules).length === 0) {
           continue
         }
 
@@ -53,7 +55,7 @@ export default {
         } catch (err) {
           isFormValid = false
           // Extrai os erros do grupo atual e funde no objeto acumulador
-          const groupErrors = parseYupErrors(err)
+          const groupErrors = useParse().parseYupErrors(err)
           accumulatedErrors = { ...accumulatedErrors, ...groupErrors }
         }
       }
