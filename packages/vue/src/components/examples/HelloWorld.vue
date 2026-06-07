@@ -37,7 +37,7 @@ const formErrors = ref({})
 const { groupBase } = useTestForm()
 const { makeGroups } = useFormHandle();
 // const { makeGroups: makeOrganGroups } = useOrganForms();
-const groups = makeGroups(props.backVars, groupBase, [8, [8, 12]])
+const groups = makeGroups(props.backVars, groupBase, [8, [8, 9]])
 // const groupsO = makeOrganGroups(organBackVars.value, {})
 console.log('groups: ', groups)
 
@@ -48,19 +48,16 @@ const handleSubmit = () => {
 
 <template>
   <fb-container>
-    <form @submit.prevent="handleSubmit" class="fb-form">
+    <!-- <form @submit.prevent="handleSubmit" class="fb-form"> -->
       <form-blocks
         v-model="formData"
         :groups="groups"
         :errors="formErrors"
+        @submit="handleSubmit"
       >
       </form-blocks>
-      <fb-row>
-        <fb-col cols=12>
-          <fb-button type="submit" variant="outline-complementary" clean>enviar</fb-button>
-        </fb-col>
-      </fb-row>
-    </form>
+      
+    <!-- </form> -->
     <fb-row>
       <fb-col>
         <p>
@@ -68,7 +65,8 @@ const handleSubmit = () => {
         </p>
       </fb-col>
       <fb-col>
-        <fb-input label="teste"></fb-input>
+        <input type="range" />
+        <input type="file" />
       </fb-col>
     </fb-row>
     <!-- <form @submit.prevent="handleSubmit2" class="fb-form">

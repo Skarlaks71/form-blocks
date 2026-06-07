@@ -6,7 +6,7 @@ import FbRadio from '../components/forms/FbRadio'
 import FbCheckbox from '../components/forms/FbCheckbox'
 
 // Mapa inicial padrão
-const registry = {
+export const registry = {
   'input': {
     component: FbInput,
     supportsLabelFor: true,
@@ -33,17 +33,3 @@ const registry = {
   },
 }
 
-/**
- * Permite ao desenvolvedor registrar componentes customizados globalmente no FormBlocks
- * @param {string} name - O nome que será usado no Objeto (input.component)
- * @param {Component} component - O componente Vue importado
- */
-export const registerComponent = (name, component, meta = {}) => {
-  registry[name] = {
-    component,
-    supportsLabelFor: meta.supportsLabelFor ?? 'true',
-    ...meta,
-  }
-}
-
-export const getRegistry = () => registry

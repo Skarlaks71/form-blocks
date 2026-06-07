@@ -1,5 +1,6 @@
 import { isValidInputType } from "../utils/useSearch";
 import useParse from "../utils/useParse";
+import { useCore } from "../composables/useCore";
 
 const { castPrimitive } = useParse()
 
@@ -21,6 +22,21 @@ const DSL_MATCHERS = [
     test: (part) => /^\d+$/.test(part) ? part : null,
     apply: (result, part) => {
       result.colProps = { ...result.colProps, cols: part }
+    }
+  },
+  {
+    // 🔥 Componentes Registrados Customizados ou Dinâmicos
+    // Ele tenta ler o método getRegistry que você expôs no useCore
+    test: (part) => {
+      const registry = useCore().getRegistry();
+      return registry && Object.prototype.hasOwnProperty.call(registry, part) ? part : null;
+    },
+    apply: (result, part) => {
+      const registry = useCore().getRegistry();
+      const registeredElement = registry[part];
+
+      // Aplica a tag/instância do componente correspondente
+      result.component = registeredElement.component;
     }
   },
   {
@@ -55,7 +71,7 @@ const DSL_MATCHERS = [
       // Mantendo sua lógica de redução padrão para objetos do Select
       result.iProps = { ...result.iProps, reduce: val => val.value }
     }
-  }
+  },
 ];
 
 export { DSL_MATCHERS }

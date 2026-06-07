@@ -15,7 +15,7 @@ import FbInput from '../forms/FbInput'
 import VSelect from 'vue-select'
 import flatPickr from 'vue-flatpickr-component';
 import { createInputNode } from '../../composables/formRenderer'
-import { getRegistry } from '../../composables/componentRegistry'
+import { useCore } from '@form-blocks/core'
 
 export default {
   name: 'FormInputsBlocks',
@@ -28,11 +28,13 @@ export default {
     const formData = inject('formData')
     const errors = inject('errors')
 
-    const registry = getRegistry()
+    const registry = useCore().getRegistry()
 
     return () => {
       const { input } = props
       if (input.dependent?.value === false) return null
+
+      console.log(errors.value)
 
       const registryItem = registry[input.component] || {}
       let supportsLabelFor = registryItem.supportsLabelFor ?? true

@@ -2,11 +2,11 @@ import useParse from "../utils/useParse"
 import { useCore } from "./useCore"
 
 export const useFormHandle = () => {
-  const { parseLimitProps, parseStringShorthand } = useParse()
+  const { toCamelCase, parseStringShorthand } = useParse()
   const { createInternalProps } = useCore()
   const makeGroups = (backVars, groupBase, groupProps, options = {}) => {
 
-    const parseFunction = options.parse || parseLimitProps
+    const parseFunction = options.parse || toCamelCase
 
     const normalizedGroups = groupBase.map(group => ({
       ...group,

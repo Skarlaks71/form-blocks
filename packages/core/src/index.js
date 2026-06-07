@@ -3,6 +3,7 @@ import useMaska from './utils/useMaska'
 import useParse from './utils/useParse'
 import { useCore } from './composables/useCore'
 import { useFormHandle } from './composables/useFormHandle'
+import { useYup } from './yup/useYup'
 
 export {
   useCloneDeep,
@@ -10,4 +11,5 @@ export {
   useParse,
   useCore,
   useFormHandle,
+  useYup,
 }

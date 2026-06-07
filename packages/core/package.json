@@ -1,6 +1,6 @@
 {
     "name": "@form-blocks/core",
-    "version": "1.0.0-alpha.4",
+    "version": "1.0.0-alpha.5",
     "type": "module",
     "main": "./dist/index.js",
     "module": "./dist/index.js",
@@ -24,7 +24,8 @@
         "vite": "^8.0.4"
     },
     "dependencies": {
-        "lodash.clonedeep": "^4.5.0"
+        "lodash.clonedeep": "^4.5.0",
+        "yup": "^1.7.1"
     },
     "author": {
         "name": "Matheus Pinheiro"
