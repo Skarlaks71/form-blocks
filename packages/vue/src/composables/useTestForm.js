@@ -14,12 +14,12 @@ export default () => {
     {
       title: 'Meu Formulário',
       forms: [
-        'Name::disabled',
+        'Name',
         'Login::email:12:md3',
-        'Senha::password:6',
+        'Senha::color:6',
         'Age::search:md2',
         ['Tipo do Órgão::select:md12:lg4:filterable', administrationTypeOptions],
-        'Flatpickr::date',
+        'Flatpickr::range',
         // ['Radio::radio:name=things:inline:button=true|b', radioOptions],
         ['Checkbox::checkbox:name=things:multiple', radioOptions],
         // ['Checkbox::checkbox:name=thingsC', radioOptions],
@@ -52,7 +52,13 @@ export default () => {
             // switch: true,
           },
         },
-      ]
+      ],
+      rules: {
+        name: {
+          required: { msg: 'o campo é obrigatório' }, 
+          min: { args: [3], msg: 'Deve conter ao menos 3 caracteres' },
+        },
+      }
     },
     {
       title: 'Contatos',
