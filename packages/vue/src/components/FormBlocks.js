@@ -11,7 +11,8 @@ import { PREFIX } from '@form-blocks/core/constants'
 import FbRow from './grid/FbRow'
 import FbCol from './grid/FbCol'
 import FbButton from './FbButton'
-import { useParse } from '@form-blocks/core'
+import { useParse, useYup } from '@form-blocks/core'
+import { ValidationError } from 'yup'
 
 export default {
   name: 'FormBlocks',
@@ -30,7 +31,14 @@ export default {
 
     // 2. Provedores (Injeção de dependência para todos os filhos)
     // Usamos toRef para manter a reatividade do objeto de erros
-    provide('errors', toRef(props, 'errors'))
+    provide('errors', computed(() => {
+      // Cria um único objeto plano combinando o validador interno e os erros externos
+      const externalErrors = props.errors || {}
+      return { 
+        ...localErrors.value, 
+        ...externalErrors 
+      }
+    }))
     provide('formData', formData)
 
     const validate = async () => {
@@ -39,26 +47,32 @@ export default {
 
       // Varre cada grupo declarado no groupBase
       for (const group of props.groups) {
-        console.log(group)
         // Se o grupo não tiver a propriedade rules definida, pula para o próximo
         if (!group.rules || Object.keys(group.rules).length === 0) {
           continue
         }
 
         try {
-          const yupSchema = buildYupSchema(group.rules)
+          const yupSchema = useYup().buildYupSchema(group.rules)
           
           if (!yupSchema) continue
 
           // Valida o formData atual contra o esquema específico DESTE grupo
-          await group.rules.validate(toRaw(formData.value), { abortEarly: false })
+          await yupSchema.validate(toRaw(formData.value), { abortEarly: false })
         } catch (err) {
           isFormValid = false
-          // Extrai os erros do grupo atual e funde no objeto acumulador
-          const groupErrors = useParse().parseYupErrors(err)
-          accumulatedErrors = { ...accumulatedErrors, ...groupErrors }
+
+          if (err instanceof ValidationError) {
+            // Extrai os erros do grupo atual e funde no objeto acumulador
+            const groupErrors = useParse().parseYupErrors(err)
+            accumulatedErrors = { ...accumulatedErrors, ...groupErrors }
+          } else {
+            console.error(err)
+          }
         }
       }
+
+      console.log('accumulatedErrors', accumulatedErrors)
 
       // Atualiza o estado reativo global de erros para os inputs pintarem na tela
       localErrors.value = accumulatedErrors

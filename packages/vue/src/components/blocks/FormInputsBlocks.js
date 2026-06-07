@@ -34,6 +34,8 @@ export default {
       const { input } = props
       if (input.dependent?.value === false) return null
 
+      console.log(errors.value)
+
       const registryItem = registry[input.component] || {}
       let supportsLabelFor = registryItem.supportsLabelFor ?? true
 
