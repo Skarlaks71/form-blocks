@@ -55,6 +55,9 @@ const handleSubmit = () => {
         :errors="formErrors"
         @submit="handleSubmit"
       >
+        <template #input(password)="{ form }">
+          <div>{{ form }}</div>
+        </template>
       </form-blocks>
       
     <!-- </form> -->
