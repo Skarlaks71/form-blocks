@@ -21,7 +21,7 @@ export default () => {
           }
         },
         'Login::email:12:md3',
-        'Senha::formKey>f=password',
+        'Senha::password:formKey>f=password:md9',
         'Age::search:md2',
         ['Tipo do Órgão::select:md12:lg4:filterable', administrationTypeOptions],
         'Flatpickr::range',

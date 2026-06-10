@@ -4,6 +4,7 @@ import useParse from './utils/useParse'
 import { useCore } from './composables/useCore'
 import { useFormHandle } from './composables/useFormHandle'
 import { useYup } from './yup/useYup'
+import { useDSL } from './dsl/useDSL'
 
 export {
   useCloneDeep,
@@ -12,4 +13,5 @@ export {
   useCore,
   useFormHandle,
   useYup,
+  useDSL,
 }
