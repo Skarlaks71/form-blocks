@@ -61,7 +61,8 @@ export const createInputNode = ({ input, formData, errors, slotProps }) => {
     ...commonProps,
     class: [
       (isFlatpickr) ? ibControlClass : '',
-      { [`${ibControlClass}--invalid`]: slotProps.state === false }
+      { [`${ibControlClass}--invalid`]: slotProps.state === false },
+      input.iProps?.class,
     ],
   }, {
     'no-options': () => 'Desculpe, sem opções no momento!'

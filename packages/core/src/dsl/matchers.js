@@ -56,11 +56,38 @@ const DSL_MATCHERS = [
     }
   },
   {
-    // Chave=Valor: name=Pedro, age=30|n
-    test: (part) => part.match(/^(?<key>\w+)=(?<value>.+)$/),
+    // Chave=Valor: name=Pedro, age=30|n, formKey>f=myKey
+    test: (part) => part.match(/^(?<left>[^=]+)=(?<value>.+)$/),
     apply: (result, match) => {
-      const { key, value } = match.groups;
-      result.iProps = { ...result.iProps, [key]: castPrimitive(value) }
+      console.log('--- MATCH DETECTADO ---')
+      const { left, value } = match.groups
+      const cleanedValue = castPrimitive(value)
+
+      const [key, scope] = left.split('>')
+
+      console.log('Chave pura extraída:', key)
+    console.log('Escopo extraído:', scope || 'i')
+    console.log('Valor limpo:', value)
+
+      const targetScope = scope || 'i'
+
+      if (targetScope === 'f') {
+        result[key] = cleanedValue
+      } 
+      
+      else if (targetScope === 'b') {
+        result.inputBlockProps = { 
+          ...result.inputBlockProps, 
+          [key]: cleanedValue 
+        }
+      } 
+      
+      else {
+        result.iProps = { 
+          ...result.iProps, 
+          [key]: cleanedValue 
+        }
+      }
     }
   },
   {

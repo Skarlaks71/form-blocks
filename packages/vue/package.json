@@ -1,6 +1,6 @@
 {
   "name": "@form-blocks/vue",
-  "version": "1.0.0-alpha.7",
+  "version": "1.0.0-alpha.8",
   "type": "module",
   "main": "./dist/form-blocks.umd.js",
   "module": "./dist/form-blocks.es.js",
@@ -25,8 +25,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@form-blocks/core": "^1.0.0-alpha.5",
-    "@form-blocks/styles": "^1.0.0-alpha.5",
+    "@form-blocks/core": "^1.0.0-alpha.6",
+    "@form-blocks/styles": "^1.0.0-alpha.5.1",
     "flatpickr": "^4.6.13",
     "maska": "^3.2.0",
     "oh-vue-icons": "^1.0.0-rc3",
