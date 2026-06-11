@@ -48,23 +48,22 @@ const handleSubmit = () => {
 
 <template>
   <fb-container>
-    <form @submit.prevent="handleSubmit" class="fb-form">
+    <!-- <form @submit.prevent="handleSubmit" class="fb-form"> -->
       <form-blocks
         v-model="formData"
         :groups="groups"
         :errors="formErrors"
-        mode="traditional"
-      />
-        <!-- <template #input(password)="{ form }">
+      >
+        <template #input(password)="{ form }">
           <div>{{ form }}</div>
         </template>
-      </form-blocks> -->
-      <fb-row>
+      </form-blocks>
+      <!-- <fb-row>
         <fb-col>
           <fb-button type="submit">enviar</fb-button>
         </fb-col>
-      </fb-row>
-    </form>
+      </fb-row> -->
+    <!-- </form> -->
     <fb-row>
       <fb-col>
         <p>
