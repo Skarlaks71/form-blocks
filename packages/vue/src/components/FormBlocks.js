@@ -20,6 +20,11 @@ export default {
     modelValue: { type: Object, default: () => ({}) },
     errors: { type: [Object, null], default: () => ({}) },
     groups: { type: Array, required: true },
+    mode: { 
+      type: String, 
+      default: 'form',
+      validator: (value) => ['form', 'traditional', 'filter'].includes(value)
+    }
   },
   emits: ['update:modelValue', 'submit', 'invalid'],
   setup(props, { slots, emit, expose }) {
@@ -72,8 +77,6 @@ export default {
         }
       }
 
-      console.log('accumulatedErrors', accumulatedErrors)
-
       // Atualiza o estado reativo global de erros para os inputs pintarem na tela
       localErrors.value = accumulatedErrors
 
@@ -93,7 +96,7 @@ export default {
     })
 
     return () => {
-      const { groups } = props
+      const { groups, mode } = props
 
       // Renderização da lista de grupos
       const renderGroups = () => {
@@ -115,30 +118,41 @@ export default {
         })
       }
 
-      return h('form', {
-          class: fbClass,
-          onSubmit: async event => {
-            event.preventDefault()
+      const isTraditional = mode === 'traditional'
+      const tagBase = isTraditional ? 'div' : 'form'
 
-            const isValid = await validate()
-            console.log('isValid', isValid)
-            if (isValid) {
-              emit('submit', formData.value)
-            }
+      const containerProps = {
+        class: fbClass,
+      }
+
+      if (!isTraditional) {
+        containerProps.onSubmit = async (event) => {
+          event.preventDefault()
+
+          const isValid = await validate()
+          if (isValid) {
+            emit('submit', formData.value)
           }
-        }, [
-          renderGroups(),
-          slots['submit-button']
-            ? slots['submit-button']()
-            : h(FbRow, {}, {
+        }
+      }
+
+      const childrenNodes = [renderGroups()]
+
+      if (!isTraditional) {
+        const submitButtonNode = slots['submit-button']
+          ? slots['submit-button']()
+          : h(FbRow, {}, {
               default: () => h(FbCol, { cols: 12 }, {
                 default: () => h(FbButton, { type: 'submit', variant: 'outline-complementary', clean: true }, {
                   default: () => 'enviar'
                 })
               })
             })
-        ]
-      )
+            
+        childrenNodes.push(submitButtonNode)
+      }
+
+      return h(tagBase, containerProps, childrenNodes)
     }
   }
 }

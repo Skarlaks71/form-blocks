@@ -20,8 +20,8 @@ export default () => {
             class: 'my-custom-class'
           }
         },
-        'Login::email:12:md3',
-        'Senha::formKey>f=password',
+        'Login::12:md3',
+        'Senha::password:formKey>f=password:md9',
         'Age::search:md2',
         ['Tipo do Órgão::select:md12:lg4:filterable', administrationTypeOptions],
         'Flatpickr::range',
@@ -39,9 +39,16 @@ export default () => {
         },
       ],
       rules: {
-        name: {
+        type: 'string', // tipo global para todos os campos do grupo
+        global: {
           required: { msg: 'o campo é obrigatório' }, 
-          min: { args: [3], msg: 'Deve conter ao menos 3 caracteres' },
+          min: { args: [4], msg: 'Deve conter ao menos 3 caracteres' },
+        },
+        name: {
+          
+        },
+        login: {
+          email: { msg: 'deve ser um email valido' },
         },
       }
     },

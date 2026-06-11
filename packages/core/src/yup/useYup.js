@@ -19,16 +19,33 @@ export const useYup = () => {
     if (!groupRules || typeof groupRules !== 'object') return null
   
     const shape = {}
+
+    const {
+      type: groupGlobalType = 'string',
+      global = {}, // regras globais que devem ser atribuidas a todos os campos do grupo sem precisar passar individualmente ex: required
+      ...fields
+    } = groupRules
+
+    const {
+      except = [],
+      ...globalRules
+    } = global
   
     // Varre cada campo/input que possui regras definidas
-    Object.entries(groupRules).forEach(([fieldName, config]) => {
+    Object.entries(fields).forEach(([fieldName, config]) => {
       // Inicializa o validador como string por padrão (comum para a maioria dos inputs)
-      const {
-        type = 'string',
-        ...rules
-      } = config
   
-      let validator = (yupTypes[type] || Yup.string)()
+      const fieldType = config.type || groupGlobalType
+      let validator = (yupTypes[fieldType] || Yup.string)()
+
+      const { type, ...fieldRules } = config
+
+      const rules = except.includes(fieldName)
+        ? fieldRules
+        : {
+            ...globalRules,
+            ...fieldRules
+          }
   
       // Varre cada regra aplicada a esse campo específico
       Object.entries(rules).forEach(([ruleName, config]) => {

@@ -17,6 +17,8 @@ import { useCore } from '@form-blocks/core'
 import { registry } from "./composables/componentRegistry"
 import { OhVueIcon, addIcons } from "oh-vue-icons"
 import { HiEye, HiEyeOff } from "oh-vue-icons/icons/hi"
+import FbSelect from 'vue-select'
+import FbFlatpickr from 'vue-flatpickr-component'
 
 const { registerMultipleComponents } = useCore()
 registerMultipleComponents(registry)
@@ -50,6 +52,8 @@ export {
   FbTextarea,
   FbButton,
   FbRadio,
+  FbSelect,
+  FbFlatpickr,
 }
 
 export default { install }

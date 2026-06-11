@@ -53,13 +53,16 @@ const handleSubmit = () => {
         v-model="formData"
         :groups="groups"
         :errors="formErrors"
-        @submit="handleSubmit"
       >
         <template #input(password)="{ form }">
           <div>{{ form }}</div>
         </template>
       </form-blocks>
-      
+      <!-- <fb-row>
+        <fb-col>
+          <fb-button type="submit">enviar</fb-button>
+        </fb-col>
+      </fb-row> -->
     <!-- </form> -->
     <fb-row>
       <fb-col>
