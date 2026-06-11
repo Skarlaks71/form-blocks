@@ -8,7 +8,7 @@ const { castPrimitive } = useParse()
  * Lista de estratégias para processar segmentos da DSL.
  * Cada matcher possui um teste de detecção e uma função de aplicação no objeto de resultado.
  */
-const DSL_MATCHERS = [
+const INTERNAL_MATCHERS = [
   {
     // Breakpoints: sm12, md6, etc.
     test: (part) => part.match(/^(sm|md|lg|xl)(\d+)$/),
@@ -56,11 +56,33 @@ const DSL_MATCHERS = [
     }
   },
   {
-    // Chave=Valor: name=Pedro, age=30|n
-    test: (part) => part.match(/^(?<key>\w+)=(?<value>.+)$/),
+    // Chave=Valor: name=Pedro, age=30|n, formKey>f=myKey
+    test: (part) => part.match(/^(?<left>[^=]+)=(?<value>.+)$/),
     apply: (result, match) => {
-      const { key, value } = match.groups;
-      result.iProps = { ...result.iProps, [key]: castPrimitive(value) }
+      const { left, value } = match.groups
+      const cleanedValue = castPrimitive(value)
+
+      const [key, scope] = left.split('>')
+
+      const targetScope = scope || 'i'
+
+      if (targetScope === 'f') {
+        result[key] = cleanedValue
+      } 
+      
+      else if (targetScope === 'b') {
+        result.inputBlockProps = { 
+          ...result.inputBlockProps, 
+          [key]: cleanedValue 
+        }
+      } 
+      
+      else {
+        result.iProps = { 
+          ...result.iProps, 
+          [key]: cleanedValue 
+        }
+      }
     }
   },
   {
@@ -74,4 +96,28 @@ const DSL_MATCHERS = [
   },
 ];
 
-export { DSL_MATCHERS }
+const customMatchers = [];
+
+const DSL_MATCHERS = new Proxy(INTERNAL_MATCHERS, {
+  get(target, prop) {
+    if (prop === 'length') return target.length + customMatchers.length;
+    
+    // Une os arrays dinamicamente quando o parser rodar o .forEach ou loops
+    const combined = [...customMatchers, ...target];
+    return combined[prop];
+  }
+});
+
+/**
+ * registrar novos comportamentos na DSL
+ * @param {Object} matcher - { test: Function, apply: Function }
+ */
+const registerCustomMatcher = (matcher) => {
+  if (!matcher || typeof matcher.test !== 'function' || typeof matcher.apply !== 'function') {
+    console.error('[FormBlocks Core]: O matcher customizado precisa conter as funções "test" e "apply".');
+    return;
+  }
+  customMatchers.push(matcher);
+};
+
+export { DSL_MATCHERS, registerCustomMatcher }

@@ -14,32 +14,18 @@ export default () => {
     {
       title: 'Meu Formulário',
       forms: [
-        'Name',
-        'Login::email:12:md3',
-        'Senha::color:6',
+        {
+          label: 'Nome',
+          iProps: {
+            class: 'my-custom-class'
+          }
+        },
+        'Login::12:md3',
+        'Senha::password:formKey>f=password:md9',
         'Age::search:md2',
         ['Tipo do Órgão::select:md12:lg4:filterable', administrationTypeOptions],
         'Flatpickr::range',
-        // ['Radio::radio:name=things:inline:button=true|b', radioOptions],
-        ['Checkbox::checkbox:name=things:multiple', radioOptions],
-        // ['Checkbox::checkbox:name=thingsC', radioOptions],
-        // {
-        //   label: 'Checkbox',
-        //   component: 'checkbox',
-        //   iProps: {
-        //     name: 'things',
-        //     multiple: true,
-        //     options: [
-        //       { label: 'carro', value: 'car' },
-        //       { label: 'Gato', value: 'cat' },
-        //       { label: 'baleia', value: 'whale' },
-        //     ],
-        //     // inline: true,
-        //     // button: true,
-        //     // switch: true,
-        //   },
-        // },
-        // checkbox simple
+        ['Checkbox::checkbox:name=things:multiple:class=my-custom-class', radioOptions],
         {
           label: 'Checkbox',
           component: 'checkbox',
@@ -47,16 +33,22 @@ export default () => {
             name: 'thingsC',
             value: 'car',
             unvalue: 2,
-            // inline: true,
-            button: true,
-            // switch: true,
+            switch: true,
+            class: 'my-custom-class',
           },
         },
       ],
       rules: {
-        name: {
+        type: 'string', // tipo global para todos os campos do grupo
+        global: {
           required: { msg: 'o campo é obrigatório' }, 
-          min: { args: [3], msg: 'Deve conter ao menos 3 caracteres' },
+          min: { args: [4], msg: 'Deve conter ao menos 3 caracteres' },
+        },
+        name: {
+          
+        },
+        login: {
+          email: { msg: 'deve ser um email valido' },
         },
       }
     },
