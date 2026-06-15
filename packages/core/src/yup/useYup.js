@@ -9,6 +9,8 @@ const yupTypes = {
   date: Yup.date
 }
 
+const customValidators = {}
+
 export const useYup = () => {
 
   /**
@@ -49,6 +51,16 @@ export const useYup = () => {
   
       // Varre cada regra aplicada a esse campo específico
       Object.entries(rules).forEach(([ruleName, config]) => {
+        // valida regras customizadas
+        if (customValidators[ruleName]) {
+          validator = customValidators[ruleName](
+            validator,
+            config
+          )
+          return
+        }
+
+        // valida regras nativas
         if (typeof validator[ruleName] !== 'function') {
           console.warn(
             `[FormBlocks] Regra Yup "${ruleName}" não encontrada.`
@@ -72,7 +84,12 @@ export const useYup = () => {
     return Yup.object().shape(shape)
   }
 
+  const registerValidator = (name, callback) => {
+    customValidators[name] = callback
+  }
+
   return {
     buildYupSchema,
+    registerValidator,
   }
 }

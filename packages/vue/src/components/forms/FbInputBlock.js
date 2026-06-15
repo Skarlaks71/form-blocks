@@ -32,6 +32,15 @@ export default {
     const feedbackId = computed(() => `${props.id}__feedback`)
     const descriptionId = computed(() => `${props.id}__description`)
 
+    const parsedInvalidFeedback = computed(() => {
+      if (!props.invalidFeedback) return ''
+
+      return props.invalidFeedback.replace(
+        /\$field/g,
+        props.label || 'campo'
+      )
+    })
+
     return () => {
       const isNativeLabel = props.labelFor !== false;
       const labelTag = isNativeLabel ? 'label' : 'span'
@@ -60,12 +69,12 @@ export default {
       }, props.description) : null
 
       // 3. Renderização do Erro (Só aparece se state === false)
-      const errorNode = (props.state === false && props.invalidFeedback) ? h('div', {
+      const errorNode = (props.state === false && parsedInvalidFeedback.value) ? h('div', {
         id: feedbackId.value,
         class: `${ibClass}__feedback`,
         style: { display: 'block' }, // Garante visibilidade no Bootstrap sem depender de irmãos
         'aria-live': 'assertive' // WCAG: Anuncia o erro imediatamente
-      }, props.invalidFeedback) : null
+      }, parsedInvalidFeedback.value) : null
 
       // 4. O Slot (Onde entrará o FbInput)
       // Passamos o id e os campos aria para o slot, para que o componente interno os herde via attrs

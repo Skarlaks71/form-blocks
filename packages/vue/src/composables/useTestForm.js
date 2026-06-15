@@ -41,7 +41,7 @@ export default () => {
       rules: {
         type: 'string', // tipo global para todos os campos do grupo
         global: {
-          required: { msg: 'o campo é obrigatório' }, 
+          required: { msg: '$field é obrigatório' }, 
           min: { args: [4], msg: 'Deve conter ao menos 3 caracteres' },
         },
         name: {
