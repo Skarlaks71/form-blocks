@@ -54,9 +54,9 @@ const handleSubmit = () => {
         :groups="groups"
         :errors="formErrors"
       >
-        <template #input(password)="{ form }">
+        <!--<template #input(password)="{ form }">
           <div>{{ form }}</div>
-        </template>
+        </template>-->
       </form-blocks>
       <!-- <fb-row>
         <fb-col>

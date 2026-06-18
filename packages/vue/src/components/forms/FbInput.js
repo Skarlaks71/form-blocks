@@ -3,6 +3,7 @@ import { PREFIX } from '@form-blocks/core/constants'
 
 export default {
   name: 'FbInput',
+  inheritAttrs: false,
   props: {
     modelValue: { type: [String, Number], default: '' },
     // Propriedade opcional de formatação
