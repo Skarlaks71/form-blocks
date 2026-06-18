@@ -70,10 +70,12 @@ const handleSubmit = () => {
           {{ formData }}
         </p>
       </fb-col>
+    <!--
       <fb-col>
         <input type="range" />
         <input type="file" />
       </fb-col>
+    -->
     </fb-row>
     <!-- <form @submit.prevent="handleSubmit2" class="fb-form">
       <form-blocks
