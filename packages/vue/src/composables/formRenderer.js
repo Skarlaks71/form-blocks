@@ -46,7 +46,7 @@ export const createInputNode = ({ input, formData, errors, slotProps }) => {
     ...Object.fromEntries(
       Object.entries(input.events || {}).map(([event, handler]) => [
         `on${event.charAt(0).toUpperCase() + event.slice(1)}`, 
-        (eventData) => handler(eventData, formData)
+        (...eventArgs) => handler(...eventArgs, formData)
       ])
     )
   }
