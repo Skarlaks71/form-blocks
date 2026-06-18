@@ -13,6 +13,7 @@ import FbTextarea from "./components/forms/FbTextarea"
 import FbCheckbox from "./components/forms/FbCheckbox"
 import FbRadio from "./components/forms/FbRadio"
 import FbButton from "./components/FbButton"
+import FbFile from "./components/forms/FbFile"
 import { useCore } from '@form-blocks/core'
 import { registry } from "./composables/componentRegistry"
 import { OhVueIcon, addIcons } from "oh-vue-icons"
@@ -31,6 +32,7 @@ const install = app => {
   app.component('FbRow', FbRow)
   app.component('FbCol', FbCol)
   app.component('FbInput', FbInput)
+  app.component('FbFile', FbFile)
   app.component('FormBlocks', FormBlocks);
   app.component('FbTextarea', FbTextarea);
   app.directive('maska', vMaska);
@@ -48,6 +50,7 @@ export {
   FbRow,
   FbCol,
   FbInput,
+  FbFile,
   FbCheckbox,
   FbTextarea,
   FbButton,
