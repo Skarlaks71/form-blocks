@@ -26,6 +26,8 @@ export default () => {
         ['Tipo do Órgão::select:md12:lg4:filterable', administrationTypeOptions],
         'Flatpickr::range',
         ['Checkbox::checkbox:name=things:multiple:class=my-custom-class', radioOptions],
+        'Anexo::file:md6',
+        'Anexos::file:multiple=true|b:mb6',
         {
           label: 'Checkbox',
           component: 'checkbox',
