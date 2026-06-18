@@ -4,6 +4,7 @@ import flatPickr from 'vue-flatpickr-component'
 import FbTextarea from '../components/forms/FbTextarea'
 import FbRadio from '../components/forms/FbRadio'
 import FbCheckbox from '../components/forms/FbCheckbox'
+import FbFile from '../components/forms/FbFile'
 
 // Mapa inicial padrão
 export const registry = {
@@ -30,6 +31,10 @@ export const registry = {
   'checkbox': {
     component: FbCheckbox,
     supportsLabelFor: false,
+  },
+  'file': {
+    component: FbFile,
+    supportsLabelFor: true,
   },
 }
 
