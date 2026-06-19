@@ -3,7 +3,6 @@ import { PREFIX } from '@form-blocks/core/constants'
 
 export default {
   name: 'FbInput',
-  inheritAttrs: false,
   props: {
     modelValue: { type: [String, Number], default: '' },
     // Propriedade opcional de formatação
@@ -55,7 +54,8 @@ export default {
           ibControlClass,
           {
             [`${ibControlClass}--valid`]: props.state === true,
-            [`${ibControlClass}--invalid`]: props.state === false
+            [`${ibControlClass}--invalid`]: props.state === false,
+            [`${ibControlClass}--with-toggle`]: attrs.type === 'password',
           }
         ],
 
@@ -87,10 +87,7 @@ export default {
         onClick: () => { showPassword.value = !showPassword.value }
       }, [h(vIcon, { name: showPassword.value ? 'hi-eye-off' : 'hi-eye', scale: '1' })])
 
-      return h('div', { class: `${PREFIX}-input-block__password-wrapper` }, [
-        inputWithDirectives,
-        toggleBtn
-      ])
+      return [inputWithDirectives, toggleBtn]
     }
   }
 }
