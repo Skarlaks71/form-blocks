@@ -1,7 +1,13 @@
 import useParse from "../utils/useParse"
 import { useCore } from "./useCore"
 
+/**
+ * 🔥 Vincula explicitamente a tipagem genérica do index.d.ts
+ * @returns {import("../index").IUseFormHandle}
+ */
 export const useFormHandle = () => {
+  const defineGroupBase = (groups) => groups;
+
   const { toCamelCase, parseStringShorthand } = useParse()
   const { createInternalProps } = useCore()
   const makeGroups = (backVars, groupBase, groupProps, options = {}) => {
@@ -35,5 +41,6 @@ export const useFormHandle = () => {
 
   return {
     makeGroups,
+    defineGroupBase,
   }
 }
