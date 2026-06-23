@@ -274,6 +274,47 @@ export default function useParse() {
   }
 
   /**
+   * Transforma uma string formatada (DSL) em um objeto de configuração de input.
+   * Suporta definição de tipo e responsividade via shorthands.
+   * * @example
+   * 'Senha::password:12:md4' => { label: 'Senha', iProps: { type: 'password' }, colProps: { cols: '12', md: '4' } }
+   * * @param {string} inputString - A string vinda do array de forms (ex: 'Nome::md6').
+   * @returns {Object} Objeto formatado com label, iProps e colProps.
+   */
+  const parseStringShorthandForForms = (inputString) => {
+    // 1. Separa o Label do restante da configuração
+    const [label, ...configSegments] = inputString.split('::')
+    const result = { label }
+
+    if (configSegments.length > 0) {
+      // Pega todos os segmentos após o :: (ex: password:6:md4 -> ['password', '6', 'md4'])
+      const parts = configSegments[0].split(':')
+      
+      parts.forEach(part => {
+        let matched = false;
+
+        for (const matcher of DSL_MATCHERS) {
+          const matchResult = matcher.test(part);
+          
+          if (matchResult) {
+            matcher.apply(result, matchResult);
+            matched = true;
+            break; // Para no primeiro que encontrar
+          }
+        }
+
+        // Caso padrão: Se nada capturou e não é vazio, assume que é uma prop booleana true
+        // Ex: "Nome::text:disabled"
+        if (!matched) {
+          result.iProps = { ...result.iProps, [part]: true }
+        }
+      })
+    }
+
+    return result
+  }
+
+  /**
    * Converte uma string com sufixo de tipo para seu valor primitivo correspondente.
    * Suporta: |s (string), |b (boolean), |n (number), |g (bigint), |y (symbol), |u (undefined), |N (null).
    * * @param {string} value - O valor vindo da DSL (ex: "true|b", "100|n").
@@ -322,6 +363,7 @@ export default function useParse() {
     parseToDatabaseComplex,
     parseToEditDataComplex,
     parseStringShorthand,
+    parseStringShorthandForForms,
     castPrimitive,
     toCamelCase,
     parseYupErrors,

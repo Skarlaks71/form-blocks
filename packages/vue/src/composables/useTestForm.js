@@ -37,6 +37,14 @@ export default () => {
             class: 'my-custom-class',
           },
         },
+        {
+          label: 'My Component',
+          dsl: [
+            'md6:name=thingsC:value=car',
+            'unvalue=2|n:switch',
+            'class=my-custom-class',
+          ]
+        }
       ],
       rules: {
         type: 'string', // tipo global para todos os campos do grupo
