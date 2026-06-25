@@ -1,5 +1,6 @@
 import useParse from "../utils/useParse"
 import { useCore } from "./useCore"
+import { useDSL } from "../dsl/useDSL"
 
 /**
  * 🔥 Vincula explicitamente a tipagem genérica do index.d.ts
@@ -10,6 +11,7 @@ export const useFormHandle = () => {
 
   const { toCamelCase, parseStringShorthand, parseStringShorthandForForms } = useParse()
   const { createInternalProps } = useCore()
+  const { resolveDslContext } = useDSL()
   const makeGroups = (backVars, groupBase, groupProps, options = {}) => {
 
     const parseFunction = options.parse || toCamelCase
@@ -23,15 +25,15 @@ export const useFormHandle = () => {
         }
 
         // se for um TypeDSL = ['DSL', Options]
-        if (Array.isArray(input)) {
-          if (typeof input[0] !== 'string') {
-            throw new Error('FB 001: The first element needs to be String!')
-          }
+        // if (Array.isArray(input)) {
+        //   if (typeof input[0] !== 'string') {
+        //     throw new Error('FB 001: The first element needs to be String!')
+        //   }
 
-          const parse = parseStringShorthand(input[0])
-          parse.iProps = { ...parse.iProps, options: input[1] }
-          return parse
-        }
+        //   const parse = parseStringShorthand(input[0])
+        //   parse.iProps = { ...parse.iProps, options: input[1] }
+        //   return parse
+        // }
 
         // se for um objeto com dsl -> string | TypeCascadeDSL = pode separar por linha ou :
         // if (input && typeof input === 'object' && 'dsl' in input) {
@@ -74,6 +76,14 @@ export const useFormHandle = () => {
         return input
       })
     }))
+
+    if (options.dslContext) {
+      const contextedGroups = resolveDslContext(normalizedGroups, options.dslContext)
+
+      createInternalProps(contextedGroups, backVars, groupProps, parseFunction)
+
+      return contextedGroups
+    }
 
     createInternalProps(normalizedGroups, backVars, groupProps, parseFunction)
 

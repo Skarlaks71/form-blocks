@@ -97,13 +97,18 @@ export interface IFormBlocksGroup {
 
 export type TypeDefineGroupBase = (groups: IFormBlocksGroup[]) => IFormBlocksGroup[];
 
+export interface IMakeGroupsOptions {
+    parse?: Function;
+    dslContext?: Record<string, any>;
+}
+
 export interface IUseFormHandle {
     defineGroupBase: TypeDefineGroupBase;
     makeGroups: (
       backVars: Record<string, any>, 
       groupBase: IFormBlocksGroup[], 
       groupProps: any, 
-      options?: { parse?: Function }
+      options?: IMakeGroupsOptions,
     ) => any;
 }
 

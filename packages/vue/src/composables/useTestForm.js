@@ -10,6 +10,12 @@ export default () => {
     { label: 'baleia', value: 'whale' },
   ]
 
+  const dslContext = {
+    radioOptions,
+    administrationTypeOptions,
+    reduceAdm: val => val.value,
+  }
+
   const groupBase = [
     {
       title: 'Meu Formulário',
@@ -21,11 +27,11 @@ export default () => {
           }
         },
         'Login::12:md3',
-        'Senha::password:formKey>f=password:md9',
+        'Senha::password:f.formKey=password:md9',
         'Age::search:md2',
-        ['Tipo do Órgão::select:md12:lg4:filterable', administrationTypeOptions],
+        'Tipo do Órgão::select:md12:lg4:filterable:options@administrationTypeOptions:reduce@reduceAdm',
         'Flatpickr::range',
-        ['Checkbox::checkbox:name=things:multiple:class=my-custom-class', radioOptions],
+        'Checkbox::checkbox:name=things:multiple:class=my-custom-class:options@radioOptions',
         {
           label: 'Checkbox',
           component: 'checkbox',
@@ -69,7 +75,7 @@ export default () => {
         btnAddVariant: 'success',
       },
       forms: [
-        ['Tipo::select:md12:lg3:filterable', administrationTypeOptions],
+        'Tipo::select:md12:lg3:filterable:options@administrationTypeOptions',
         'Valor::mask=####-##:md12:lg3',
         'nome',
         'login',
@@ -79,5 +85,6 @@ export default () => {
 
   return {
     groupBase,
+    dslContext,
   }
 }

@@ -342,6 +342,45 @@ export default function useParse() {
     return typeMap[type] ? typeMap[type](raw) : value;
   };
 
+  /**
+   * Injeta um valor dentro do objeto de configuração baseado em um caminho com pontos.
+   * Suporta os prefixos:
+   * - b.* -> inputBlockProps
+   * - i.* -> iProps
+   * - f.* -> propriedades direto no topo do formulário (ex: f.component)
+   * Caso não tenha prefixo, o padrão é injetar em iProps.
+   * * @param {Object} result - O objeto sendo montado pelo parser
+   * @param {string} path - O caminho da propriedade (ex: 'options', 'b.labelClass')
+   * @param {any} value - O valor a ser injetado (pode ser a string '@contextKey' ou o valor final)
+   */
+  const resolveTargetProperty = (result, path, value) => {
+    const parts = path.split('.')
+
+    // Se não tem ponto, cai no comportamento padrão (iProps)
+    if (parts.length === 1) {
+      result.iProps = { ...result.iProps, [parts[0]]: value }
+      return
+    }
+
+    const [prefix, propName] = parts
+
+    switch (prefix) {
+      case 'b': // Bloco (inputBlockProps)
+        result.inputBlockProps = { ...result.inputBlockProps, [propName]: value }
+        break
+      case 'i': // Input (iProps)
+        result.iProps = { ...result.iProps, [propName]: value }
+        break
+      case 'f': // Form Config (Raiz do objeto)
+        result[propName] = value
+        break
+      default:
+        // Caso o dev use algo fora do padrão (ex: custom.prop), joga no iProps por segurança
+        result.iProps = { ...result.iProps, [path]: value }
+        break
+    }
+  }
+
   const parseYupErrors = (yupError) => {
     const errors = {}
     if (yupError.inner && Array.isArray(yupError.inner)) {
@@ -367,5 +406,6 @@ export default function useParse() {
     castPrimitive,
     toCamelCase,
     parseYupErrors,
+    resolveTargetProperty,
   }
 }
