@@ -6,6 +6,7 @@ import { useFormHandle } from './composables/useFormHandle'
 import { useYup } from './yup/useYup'
 import { useDSL } from './dsl/useDSL'
 
+const { defineGroupBase } = useFormHandle()
 export {
   useCloneDeep,
   useMaska,
@@ -14,4 +15,5 @@ export {
   useFormHandle,
   useYup,
   useDSL,
+  defineGroupBase,
 }

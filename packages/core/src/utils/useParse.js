@@ -274,6 +274,47 @@ export default function useParse() {
   }
 
   /**
+   * Transforma uma string formatada (DSL) em um objeto de configuração de input.
+   * Suporta definição de tipo e responsividade via shorthands.
+   * * @example
+   * 'Senha::password:12:md4' => { label: 'Senha', iProps: { type: 'password' }, colProps: { cols: '12', md: '4' } }
+   * * @param {string} inputString - A string vinda do array de forms (ex: 'Nome::md6').
+   * @returns {Object} Objeto formatado com label, iProps e colProps.
+   */
+  const parseStringShorthandForForms = (inputString) => {
+    // 1. Separa o Label do restante da configuração
+    const [label, ...configSegments] = inputString.split('::')
+    const result = { label }
+
+    if (configSegments.length > 0) {
+      // Pega todos os segmentos após o :: (ex: password:6:md4 -> ['password', '6', 'md4'])
+      const parts = configSegments[0].split(':')
+      
+      parts.forEach(part => {
+        let matched = false;
+
+        for (const matcher of DSL_MATCHERS) {
+          const matchResult = matcher.test(part);
+          
+          if (matchResult) {
+            matcher.apply(result, matchResult);
+            matched = true;
+            break; // Para no primeiro que encontrar
+          }
+        }
+
+        // Caso padrão: Se nada capturou e não é vazio, assume que é uma prop booleana true
+        // Ex: "Nome::text:disabled"
+        if (!matched) {
+          result.iProps = { ...result.iProps, [part]: true }
+        }
+      })
+    }
+
+    return result
+  }
+
+  /**
    * Converte uma string com sufixo de tipo para seu valor primitivo correspondente.
    * Suporta: |s (string), |b (boolean), |n (number), |g (bigint), |y (symbol), |u (undefined), |N (null).
    * * @param {string} value - O valor vindo da DSL (ex: "true|b", "100|n").
@@ -301,6 +342,45 @@ export default function useParse() {
     return typeMap[type] ? typeMap[type](raw) : value;
   };
 
+  /**
+   * Injeta um valor dentro do objeto de configuração baseado em um caminho com pontos.
+   * Suporta os prefixos:
+   * - b.* -> inputBlockProps
+   * - i.* -> iProps
+   * - f.* -> propriedades direto no topo do formulário (ex: f.component)
+   * Caso não tenha prefixo, o padrão é injetar em iProps.
+   * * @param {Object} result - O objeto sendo montado pelo parser
+   * @param {string} path - O caminho da propriedade (ex: 'options', 'b.labelClass')
+   * @param {any} value - O valor a ser injetado (pode ser a string '@contextKey' ou o valor final)
+   */
+  const resolveTargetProperty = (result, path, value) => {
+    const parts = path.split('.')
+
+    // Se não tem ponto, cai no comportamento padrão (iProps)
+    if (parts.length === 1) {
+      result.iProps = { ...result.iProps, [parts[0]]: value }
+      return
+    }
+
+    const [prefix, propName] = parts
+
+    switch (prefix) {
+      case 'b': // Bloco (inputBlockProps)
+        result.inputBlockProps = { ...result.inputBlockProps, [propName]: value }
+        break
+      case 'i': // Input (iProps)
+        result.iProps = { ...result.iProps, [propName]: value }
+        break
+      case 'f': // Form Config (Raiz do objeto)
+        result[propName] = value
+        break
+      default:
+        // Caso o dev use algo fora do padrão (ex: custom.prop), joga no iProps por segurança
+        result.iProps = { ...result.iProps, [path]: value }
+        break
+    }
+  }
+
   const parseYupErrors = (yupError) => {
     const errors = {}
     if (yupError.inner && Array.isArray(yupError.inner)) {
@@ -322,8 +402,10 @@ export default function useParse() {
     parseToDatabaseComplex,
     parseToEditDataComplex,
     parseStringShorthand,
+    parseStringShorthandForForms,
     castPrimitive,
     toCamelCase,
     parseYupErrors,
+    resolveTargetProperty,
   }
 }
