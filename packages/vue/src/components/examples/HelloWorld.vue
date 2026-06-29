@@ -34,10 +34,10 @@ const props = defineProps({
 const formData = ref({});
 const formOrganData = ref({});
 const formErrors = ref({})
-const { groupBase } = useTestForm()
+const { groupBase, dslContext } = useTestForm()
 const { makeGroups } = useFormHandle();
 // const { makeGroups: makeOrganGroups } = useOrganForms();
-const groups = makeGroups(props.backVars, groupBase, [8, [8, 9]])
+const groups = makeGroups(props.backVars, groupBase, [8, [8, 9]], { dslContext })
 // const groupsO = makeOrganGroups(organBackVars.value, {})
 console.log('groups: ', groups)
 

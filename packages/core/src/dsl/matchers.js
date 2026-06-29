@@ -2,7 +2,7 @@ import { isValidInputType } from "../utils/useSearch";
 import useParse from "../utils/useParse";
 import { useCore } from "../composables/useCore";
 
-const { castPrimitive } = useParse()
+const { castPrimitive, resolveTargetProperty } = useParse()
 
 /**
  * Lista de estratégias para processar segmentos da DSL.
@@ -56,33 +56,22 @@ const INTERNAL_MATCHERS = [
     }
   },
   {
+    // chave@[contexto]: options@radioOptions, f.labelClass@myLabelClass
+    test: (part) => part.match(/^(?<left>[\w.-]+)@(?<value>[\w.]+)$/),
+    apply: (result, match) => {
+      const { left, value } = match.groups
+      // Salva o ponteiro temporário com '@' para ser resolvido depois na resolveDslContext
+      resolveTargetProperty(result, left, `@${value}`)
+    }
+  },
+  {
     // Chave=Valor: name=Pedro, age=30|n, formKey>f=myKey
-    test: (part) => part.match(/^(?<left>[^=]+)=(?<value>.+)$/),
+    test: (part) => part.match(/^(?<left>[^=\s]+)=(?<value>.+)$/),
     apply: (result, match) => {
       const { left, value } = match.groups
       const cleanedValue = castPrimitive(value)
 
-      const [key, scope] = left.split('>')
-
-      const targetScope = scope || 'i'
-
-      if (targetScope === 'f') {
-        result[key] = cleanedValue
-      } 
-      
-      else if (targetScope === 'b') {
-        result.inputBlockProps = { 
-          ...result.inputBlockProps, 
-          [key]: cleanedValue 
-        }
-      } 
-      
-      else {
-        result.iProps = { 
-          ...result.iProps, 
-          [key]: cleanedValue 
-        }
-      }
+      resolveTargetProperty(result, left, cleanedValue)
     }
   },
   {

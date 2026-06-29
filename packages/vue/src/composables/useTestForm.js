@@ -10,6 +10,12 @@ export default () => {
     { label: 'baleia', value: 'whale' },
   ]
 
+  const dslContext = {
+    radioOptions,
+    administrationTypeOptions,
+    reduceAdm: val => val.value,
+  }
+
   const groupBase = [
     {
       title: 'Meu Formulário',
@@ -21,11 +27,11 @@ export default () => {
           }
         },
         'Login::12:md3',
-        'Senha::password:formKey>f=password:md9',
+        'Senha::password:f.formKey=password:md9',
         'Age::search:md2',
-        ['Tipo do Órgão::select:md12:lg4:filterable', administrationTypeOptions],
+        'Tipo do Órgão::select:md12:lg4:filterable:options@administrationTypeOptions:reduce@reduceAdm',
         'Flatpickr::range',
-        ['Checkbox::checkbox:name=things:multiple:class=my-custom-class', radioOptions],
+        'Checkbox::checkbox:name=things:multiple:class=my-custom-class:options@radioOptions',
         {
           label: 'Checkbox',
           component: 'checkbox',
@@ -37,11 +43,19 @@ export default () => {
             class: 'my-custom-class',
           },
         },
+        {
+          label: 'My Component',
+          dsl: [
+            'md6:name=thingsC:value=car',
+            'unvalue=2|n:switch',
+            'class=my-custom-class',
+          ]
+        }
       ],
       rules: {
         type: 'string', // tipo global para todos os campos do grupo
         global: {
-          required: { msg: 'o campo é obrigatório' }, 
+          required: { msg: '$field é obrigatório' }, 
           min: { args: [4], msg: 'Deve conter ao menos 3 caracteres' },
         },
         name: {
@@ -61,7 +75,7 @@ export default () => {
         btnAddVariant: 'success',
       },
       forms: [
-        ['Tipo::select:md12:lg3:filterable', administrationTypeOptions],
+        'Tipo::select:md12:lg3:filterable:options@administrationTypeOptions',
         'Valor::mask=####-##:md12:lg3',
         'nome',
         'login',
@@ -71,5 +85,6 @@ export default () => {
 
   return {
     groupBase,
+    dslContext,
   }
 }

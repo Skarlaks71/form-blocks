@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    // 🚀 O padrão moderno que o Vite utiliza e o TS 6.x+ exige
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "target": "ESNext",
+    
+    // 🔥 Removemos o 'baseUrl' e usamos o caminho relativo baseado na raiz do projeto
+    "paths": {
+      "@form-blocks/core": ["../core/src/index.js"]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "../core/src/**/*"
+  ]
+}
