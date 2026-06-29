@@ -45,7 +45,7 @@ export const createInputNode = ({ input, formData, errors, slotProps }) => {
     // limit: input.limitChars,
     ...Object.fromEntries(
       Object.entries(input.events || {}).map(([event, handler]) => [
-        `on${event.charAt(0).toUpperCase() + event.slice(1)}`, 
+        `on${event.charAt(0).toUpperCase() + event.slice(1)}`,
         (...eventArgs) => handler(...eventArgs, formData)
       ])
     )
