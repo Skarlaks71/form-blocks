@@ -8,10 +8,20 @@ export const useCore = () => {
     const props = []
     groupProps.forEach(gp => props.push(parseLimitProps(backVars, gp, parseFunction)))
     groupBase.forEach((group, index) => {
-      group.forms = group.forms.map((input, indexForm) => ({
-        ...input,
-        ...props[index][indexForm],
-      }))
+      let inputCounter = 0
+      group.forms = group.forms.map((form) => {
+        if (form.noInput) {
+          return { ...form }
+        }
+
+        const currentProps = props[index][inputCounter]
+        inputCounter++
+        
+        return {
+          ...form,
+          ...currentProps,
+        }
+      })
     })
   }
 

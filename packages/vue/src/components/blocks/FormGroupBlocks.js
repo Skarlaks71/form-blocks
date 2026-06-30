@@ -1,9 +1,10 @@
 import FbRow from '../grid/FbRow'
 import FbCol from '../grid/FbCol'
 import FormInputsBlocks from './FormInputsBlocks'
-import { h, Transition, resolveComponent } from 'vue'
+import { h, Transition, resolveComponent, resolveDynamicComponent } from 'vue'
 import FormBlocksRepeater from './FormBlocksRepeater'
 import { PREFIX } from '@form-blocks/core/constants'
+import { useCore } from '@form-blocks/core'
 
 export default {
   name: 'FormGroupBlocks',
@@ -55,6 +56,20 @@ export default {
             // Se houver um slot específico para este input, usamos ele
             if (slots[slotName]) {
               return slots[slotName]({ form, index: formKey })
+            }
+
+            if (form.noInput) {
+              const registry = useCore().getRegistry()
+              const componentName = form.component || 'div'
+
+              const registryItem = registry[componentName]
+              const componentTarget = registryItem 
+                ? (registryItem.component || resolveDynamicComponent(componentName))
+                : resolveDynamicComponent(componentName)
+
+              return h(FbCol, { cols: 12, ...form.colProps }, {
+                default: () => h(componentTarget, { ...form.layoutProps }, slots)
+              })
             }
 
             // Caso contrário, renderizamos o FormInputsBlocks e repassamos TODOS os slots

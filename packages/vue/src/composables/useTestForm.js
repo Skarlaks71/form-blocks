@@ -22,9 +22,16 @@ export default () => {
       forms: [
         {
           label: 'Nome',
+          colProps: { md: 6 },
           iProps: {
             class: 'my-custom-class'
           }
+        },
+        {
+          noInput: true,
+          component: 'my-test',
+          colProps: { md: 6 },
+          layoutProps: { test: 'oi' }
         },
         'Login::12:md3',
         'Senha::password:f.formKey=password:md9',
